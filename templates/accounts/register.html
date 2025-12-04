@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block unauthenticated_content %}
+<div class="form-container">
+
+    <div class="form-header">
+        <h1>Commencer ici</h1>
+    </div>
+
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+
+        <form method="post" class="auth-form">
+    {% csrf_token %}
+
+    <div class="form-row">
+        <div class="form-group">
+            <label><i class="fas fa-user"></i> First name</label>
+            {{ form.first_name }}
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-user"></i> Last name</label>
+            {{ form.last_name }}
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Email</label>
+            {{ form.email }}
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-user-circle"></i> Username</label>
+            {{ form.username }}
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label><i class="fas fa-lock"></i> Password</label>
+            {{ form.password1 }}
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-lock"></i> Confirm Password</label>
+            {{ form.password2 }}
+        </div>
+    </div>
+    <div class="form-row">
+    <div class="form-group">
+        <label><i class="fas fa-user-tag"></i> Rôle</label>
+        <select name="role" class="input-field">
+            <option value="" disabled selected>Choisir votre rôle</option>
+            <option value="student">Étudiant</option>
+            <option value="doctor">Médecin</option>
+            <option value="chef">Chef de Service</option>
+            <option value="responsable">Responsable Hôpital</option>
+            <option value="admin">Admin</option>
+        </select>
+    </div>
+</div>
+    <button type="submit" class="submit-btn">Créer compte</button>
+</form>
+
+    </form>
+
+</div>
+{% endblock unauthenticated_content %}

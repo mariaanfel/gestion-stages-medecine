@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard Étudiant{% endblock %}
+
+{% block sidebar_menu %}
+
+<a href="{% url 'accounts:profile' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-user"></i></div>
+    <div class="nav-text">Mon Profil</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-briefcase"></i></div>
+    <div class="nav-text">Mon Stage</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-star"></i></div>
+    <div class="nav-text">Évaluations</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-envelope"></i></div>
+    <div class="nav-text">Messages</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-bell"></i></div>
+    <div class="nav-text">Notifications</div>
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Tableau de Bord Étudiant</h1>
+    <p class="dashboard-subtitle">Gérez vos stages, évaluations et communications</p>
+</div>
+
+<div class="cards-grid">
+
+    <!-- Mon Stage -->
+    <div class="dashboard-card student-card">
+        <div class="card-header">
+            <h3 class="card-title">Mon Stage</h3>
+            <div class="card-icon student-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Consultez toutes les informations liées à votre stage.</p>
+            <span class="stat-badge">Stage en cours</span>
+        </div>
+    </div>
+
+    <!-- Évaluations -->
+    <div class="dashboard-card student-card">
+        <div class="card-header">
+            <h3 class="card-title">Mes Évaluations</h3>
+            <div class="card-icon student-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Suivez vos notes et votre progression.</p>
+            <span class="stat-badge">Moyenne: 15.5/20</span>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="dashboard-card student-card">
+        <div class="card-header">
+            <h3 class="card-title">Messages</h3>
+            <div class="card-icon student-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Communiquez facilement avec votre encadrant.</p>
+            <span class="stat-badge">2 messages non lus</span>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="dashboard-card student-card">
+        <div class="card-header">
+            <h3 class="card-title">Notifications</h3>
+            <div class="card-icon student-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Restez à jour sur les annonces importantes.</p>
+            <span class="stat-badge">3 nouvelles alertes</span>
+        </div>
+    </div>
+</div>
+
+<!-- Section calendrier -->
+<div class="calendar-section">
+    <h3 class="calendar-title">Novembre 2024</h3>
+    <div class="calendar-grid">
+        <div class="calendar-day">Lun</div>
+        <div class="calendar-day">Mar</div>
+        <div class="calendar-day">Mer</div>
+        <div class="calendar-day">Jeu</div>
+        <div class="calendar-day">Ven</div>
+        <div class="calendar-day">Sam</div>
+        <div class="calendar-day">Dim</div>
+        
+        {% for day in "123456789101112131415161718192021222324252627282930" %}
+        <div class="calendar-date {% if day == '15' %}today{% endif %}">{{ day }}</div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i>
+    Prochain rendez-vous : Lundi 15 novembre - 14h30 avec votre encadrant
+</div>
+{% endblock %}

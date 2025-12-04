@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+
+    <h1 class="dashboard-title">Mon Profil</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+
+        <!-- === Informations générales === -->
+        <div class="profile-card">
+            <h2 class="profile-section-title">Informations générales</h2>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Nom d'utilisateur :</label>
+                    <input type="text" name="username" value="{{ user.username }}" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label>Email :</label>
+                    <input type="email" name="email" value="{{ user.email }}" class="input-field">
+                </div>
+            </div>
+
+            <label>Rôle :</label>
+            <input type="text" value="{{ user.role }}" class="input-field" disabled>
+        </div>
+
+        <!-- === Profil selon rôle (inchangé) === -->
+        {% if user.role == "student" and user.studentprofile %}
+        <div class="profile-card">
+            <h2 class="profile-section-title">Profil Étudiant</h2>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Matricule :</label>
+                    <input type="text" name="matricule" value="{{ user.studentprofile.matricule }}" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label>Cycle :</label>
+                    <input type="text" name="cycle" value="{{ user.studentprofile.cycle }}" class="input-field">
+                </div>
+            </div>
+
+            <label>Documents :</label>
+            <input type="file" name="documents" class="input-field">
+        </div>
+        {% endif %}
+
+
+    <!-- === Champs Service & Hôpital selon rôle === -->
+{% if user.role == "chef" or user.role == "doctor" or user.role == "responsable" or user.role == "admin" %}
+<div class="profile-card">
+    <h2 class="profile-section-title">Profil {{ user.role|capfirst }}</h2>
+
+    <div class="input-row">
+        <!-- Service -->
+        <div class="input-group">
+            <label>Service :</label>
+            <input type="text" name="service" 
+                   value="{% if user.chefserviceprofile %}{{ user.chefserviceprofile.service }}{% elif user.doctorprofile %}{{ user.doctorprofile.speciality }}{% elif user.responsablehopitalprofile %}{{ user.responsablehopitalprofile.service }}{% endif %}" 
+                   class="input-field">
+        </div>
+
+        <!-- Hôpital -->
+        <div class="input-group">
+            <label>Nom de l'Hôpital :</label>
+            <input type="text" name="hopital" 
+                   value="{% if user.chefserviceprofile %}{{ user.chefserviceprofile.hopital }}{% elif user.responsablehopitalprofile %}{{ user.responsablehopitalprofile.hopital }}{% endif %}" 
+                   class="input-field">
+        </div>
+    </div>
+</div>
+{% endif %}
+    <!-- Bouton save -->
+        <div class="profile-actions">
+            <button type="submit" class="btn edit-btn">Enregistrer les changements</button>
+        </div>
+
+    </form>
+</div>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block unauthenticated_content %}
+<div class="login-container">
+    <h2>Connexion</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <i class="fa-solid fa-user icon"></i>
+            {{ form.username }}
+        </div>
+
+        <div class="input-group">
+            <i class="fa-solid fa-lock"></i>
+            {{ form.password }}
+        </div>
+
+        <button type="submit" class="btn-login">Se connecter</button>
+    </form>
+
+    <p>Pas de compte ? <a href="{% url 'accounts:register' %}">S'inscrire</a></p>
+</div>
+{% endblock unauthenticated_content %}

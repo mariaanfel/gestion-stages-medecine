@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard Chef de Service{% endblock %}
+
+{% block sidebar_menu %}
+<!-- Menu spécifique chef de service avec titres recommandés -->
+<a href="{% url 'accounts:profile' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-user"></i></div>
+    <div class="nav-text">Mon Profil</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+    <div class="nav-text">Offres de Stage</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-inbox"></i></div>
+    <div class="nav-text">Candidatures Reçues</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
+    <div class="nav-text">Planning</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-chart-pie"></i></div>
+    <div class="nav-text">Statistiques</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-envelope"></i></div>
+    <div class="nav-text">Message</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-bell"></i></div>
+    <div class="nav-text">Notification</div>
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Tableau de Bord Chef de Service</h1>
+    <p class="dashboard-subtitle">
+        {% if user.chefserviceprofile %}
+            Service: {{ user.chefserviceprofile.service }}
+        {% endif %}
+    </p>
+</div>
+
+<!-- Notifications -->
+<div class="alert alert-warning">
+    <i class="fas fa-bell"></i>
+    2 nouvelles demandes de stage en attente de validation
+</div>
+
+<div class="cards-grid">
+    <!-- Gestion du Service -->
+    <div class="dashboard-card chef-card">
+        <div class="card-header">
+            <h3 class="card-title">Gestion du Service</h3>
+            <div class="card-icon chef-icon">
+                <i class="fas fa-clinic-medical"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Gérez l'organisation et les ressources du service.</p>
+            <span class="stat-badge">
+                {% if stats %}{{ stats.lits_disponibles }}{% else %}12{% endif %} lits disponibles
+            </span>
+        </div>
+    </div>
+
+    <!-- Offres de Stage -->
+    <div class="dashboard-card chef-card">
+        <div class="card-header">
+            <h3 class="card-title">Offres de Stage</h3>
+            <div class="card-icon chef-icon">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Gérez les offres de stages du service.</p>
+            <span class="stat-badge">
+                {% if stats %}{{ stats.stages_proposes }}{% else %}5{% endif %} stages proposés
+            </span>
+        </div>
+    </div>
+
+    <!-- Candidatures Reçues -->
+    <div class="dashboard-card chef-card">
+        <div class="card-header">
+            <h3 class="card-title">Candidatures Reçues</h3>
+            <div class="card-icon chef-icon">
+                <i class="fas fa-inbox"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Consultez toutes les candidatures reçues pour les stages.</p>
+            <span class="stat-badge">
+                {% if stats %}{{ stats.candidatures_reçues }}{% else %}3{% endif %} candidatures
+            </span>
+        </div>
+    </div>
+
+    <!-- Planning -->
+    <div class="dashboard-card chef-card">
+        <div class="card-header">
+            <h3 class="card-title">Planning</h3>
+            <div class="card-icon chef-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Organisez les horaires et réunions du service.</p>
+            <span class="stat-badge">{{ stats.reunions_cette_semaine|default:"1" }} réunion cette semaine</span>
+        </div>
+    </div>
+
+    <!-- Statistiques -->
+    <div class="dashboard-card chef-card">
+        <div class="card-header">
+            <h3 class="card-title">Statistiques</h3>
+            <div class="card-icon chef-icon">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Analyse rapide des performances du service.</p>
+            <span class="stat-badge">85% taux d'occupation</span>
+        </div>
+    </div>
+
+    <!-- Message -->
+    <div class="dashboard-card chef-card">
+        <div class="card-header">
+            <h3 class="card-title">Message</h3>
+            <div class="card-icon chef-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Consultez vos messages internes.</p>
+            <span class="stat-badge">2 nouveaux messages</span>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="dashboard-card chef-card">
+        <div class="card-header">
+            <h3 class="card-title">Notification</h3>
+            <div class="card-icon chef-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Restez informé des alertes et événements du service.</p>
+            <span class="stat-badge">{{ stats.alertes_en_cours|default:"2" }} notifications</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

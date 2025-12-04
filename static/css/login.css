@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+body{
+    background-image: url("/static/images/Design_sans_titre.png");
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-position: center;
+    background-size: cover;
+    /*background: linear-gradient(135deg, #667eea, #764ba2)*/
+}
+.login-container{
+    /*background-color: rgba(255, 255, 255, 0.1); /* Fond semi-transparent */
+    background-color: transparent;
+    border: 2px solid (255.255.255.0.2 );
+    backdrop-filter: blur(20px);
+    padding :40px;
+    width: 420px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.login-container h2{
+    font-size: 30px;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 30px;
+
+}
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+.input-field {
+    width :100%;
+    padding: 15px 50px 15px 20px;
+    border-radius: 25px;
+    outline :none;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3); 
+    color:#fff;
+    font-size: 16px;
+    padding-right: 40px;
+}
+.input-field ::placeholder{
+    color: rgba(255, 255, 255, 0.7);
+
+}
+.input-group i{
+    position: absolute;
+    transform: translateY(-50%);
+    right: 20px;
+    top:50%;
+    color: #fff; /* Icônes blanches comme sur la photo */
+    font-size: 18px;
+
+}
+p{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+    margin: bottom 25px; ;
+}
+p a {
+    color: #fff;
+    text-decoration: none;
+    transition: 0.5s;
+    font-weight: bold;
+}
+p a:hover{
+    text-decoration: underline;
+}
+.btn-login{
+    width: 100%;
+    padding: 15px;
+    border-radius: 25px;
+    outline: none;
+    border: 0;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.5s;
+
+    background: #fff;
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+
+.btn-login:hover{
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3); 
+    color: #fff;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 25px;
+    color: #fff;
+    font-size: 14px;
+}

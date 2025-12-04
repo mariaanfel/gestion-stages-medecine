@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Médicale - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+{% if user.is_authenticated %}
+    <!-- ===== SIDEBAR ===== -->
+    <button class="mobile-toggle" id="mobileToggle" style="display: none;">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div class="logo-container">
+            <a href="{% url 'accounts:login' %}">
+                <div class="logo">
+                    <i class="fas fa-hospital-alt"></i> Gestion Médicale
+                </div>
+            </a>
+        </div>
+
+        <!-- Profil utilisateur -->
+        <div class="user-profile">
+            <div class="avatar">
+                {% if user.first_name and user.last_name %}
+                    {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                {% else %}
+                    {{ user.username|first|upper }}
+                {% endif %}
+            </div>
+            <div class="welcome-text">BONJOUR, {{ user.first_name|default:user.username|upper }}!</div>
+            <div class="user-name">
+                {% if user.first_name and user.last_name %}
+                    {{ user.first_name }} {{ user.last_name }}
+                {% else %}
+                    {{ user.username }}
+                {% endif %}
+            </div>
+            <div class="user-role">
+                {% if user.role == "student" %}
+                    <i class="fas fa-user-graduate"></i> Étudiant
+                {% elif user.role == "doctor" %}
+                    <i class="fas fa-user-md"></i> Médecin
+                {% elif user.role == "chef" %}
+                    <i class="fas fa-user-tie"></i> Chef Service
+                {% elif user.role == "responsable" %}
+                    <i class="fas fa-user-cog"></i> Responsable
+                {% elif user.role == "admin" %}
+                    <i class="fas fa-user-shield"></i> Administrateur
+                {% endif %}
+            </div>
+            <div class="user-info">
+                {% if user.role == "student" and user.studentprofile %}
+                    <p><i class="fas fa-id-card"></i> {{ user.studentprofile.matricule }}</p>
+                {% elif user.role == "doctor" and user.doctorprofile %}
+                    <p><i class="fas fa-stethoscope"></i> {{ user.doctorprofile.speciality }}</p>
+                {% elif user.role == "chef" and user.chefserviceprofile %}
+                    <p><i class="fas fa-clinic-medical"></i> {{ user.chefserviceprofile.service }}</p>
+                {% elif user.role == "responsable" and user.responsablehopitalprofile %}
+                    <p><i class="fas fa-hospital"></i> {{ user.responsablehopitalprofile.hopital }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="nav-menu">
+            {% block sidebar_menu %}{% endblock %}
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="{% url 'accounts:profile' %}" class="sidebar-link">
+                <i class="fas fa-user-cog"></i> Mon Profil
+            </a>
+            <a href="{% url 'accounts:logout' %}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Se déconnecter
+            </a>
+        </div>
+    </div>
+
+    <!-- Contenu principal connecté -->
+    <div class="main-content-with-sidebar">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+
+{% else %}
+    <!-- Contenu pour non-connectés : login / register -->
+    <div class="main-content">
+        {% block unauthenticated_content %}{% endblock %}
+    </div>
+{% endif %}
+
+<script src="{% static 'js/sidebar.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
