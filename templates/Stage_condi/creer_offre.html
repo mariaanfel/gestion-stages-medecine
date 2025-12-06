@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Créer une Offre{% endblock %}
+
+{% block sidebar_menu %}
+
+<a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-home"></i></div>
+    <div class="nav-text">Dashboard</div>
+</a>
+
+<a href="{% url 'Stage_condi:liste_offre' %}" class="nav-item active">
+    <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+    <div class="nav-text">Offres de Stage</div>
+</a>
+
+<a href="{% url 'Stage_condi:creer_offre' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-plus"></i></div>
+    <div class="nav-text">Créer une Offre</div>
+</a>
+
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+ <div class="form-container">
+    <h2 class="form-title">Créer une Nouvelle Offre</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn-submit">Enregistrer</button>
+    </form>
+</div>
+{% endblock %}

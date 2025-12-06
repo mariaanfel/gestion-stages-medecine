@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Liste des Offres{% endblock %}
+
+{% block sidebar_menu %}
+
+<a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-home"></i></div>
+    <div class="nav-text">Dashboard</div>
+</a>
+
+<a href="{% url 'Stage_condi:liste_offre' %}" class="nav-item active">
+    <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+    <div class="nav-text">Offres de Stage</div>
+</a>
+
+<a href="{% url 'Stage_condi:creer_offre' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-plus"></i></div>
+    <div class="nav-text">Créer une Offre</div>
+</a>
+
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/cards.css' %}">
+
+<h1 class="page-title">Liste des Offres de Stage</h1>
+
+{% if user.is_authenticated and user.role == "chef" %}
+<a href="{% url 'Stage_condi:creer_offre' %}" class="submit-btn" style="max-width:200px; margin-bottom:15px; display:inline-block;">
+    <i class="fas fa-plus"></i> Nouvelle Offre
+</a>
+{% endif %}
+
+<div class="offre-grid">
+    {% for offre in offres %}
+        <div class="offre-card">
+            <div class="offre-title">{{ offre.titre }}</div>
+
+            <div class="offre-detail">
+                {{ offre.description|truncatewords:20 }}
+            </div>
+
+            <p style="color:#6c757d; margin-top:10px;">
+                <i class="fas fa-calendar"></i>
+                Du {{ offre.date_debut }} au {{ offre.date_fin }}
+            </p>
+
+            <div class="offre-btns">
+                <a href="{% url 'Stage_condi:detail_offre' offre.id %}" class="offre-edit">Détails</a>
+
+                {% if user.is_authenticated and user.role == "chef" %}
+                <a href="{% url 'Stage_condi:modifier_offre' offre.id %}" class="offre-edit">Modifier</a>
+                <a href="{% url 'Stage_condi:supprimer_offre' offre.id %}" class="offre-delete"
+                   onclick="return confirm('Supprimer cette offre ?');">
+                    Supprimer
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <p>Aucune offre pour le moment.</p>
+    {% endfor %}
+</div>
+{% endblock %}

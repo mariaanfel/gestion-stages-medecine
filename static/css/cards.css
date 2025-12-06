@@ -1,0 +1,56 @@
+.offre-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.offre-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.offre-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.offre-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.offre-detail {
+    font-size: 14px;
+    color: #7f8c8d;
+    line-height: 1.6;
+}
+
+.offre-btns {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.offre-edit, .offre-delete {
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.offre-edit {
+    background: #2980b9;
+}
+
+.offre-delete {
+    background: #e74c3c;
+}

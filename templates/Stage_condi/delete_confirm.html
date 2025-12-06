@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Supprimer Offre{% endblock %}
+
+{% block sidebar_menu %}
+
+<a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-home"></i></div>
+    <div class="nav-text">Dashboard</div>
+</a>
+
+<a href="{% url 'Stage_condi:liste_offre' %}" class="nav-item active">
+    <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+    <div class="nav-text">Offres de Stage</div>
+</a>
+
+<a href="{% url 'Stage_condi:creer_offre' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-plus"></i></div>
+    <div class="nav-text">Créer une Offre</div>
+</a>
+
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+<div class="form-container" style="max-width:500px; background:#fff5f5;">
+    <h2 class="form-title" style="color:#e74c3c;">Supprimer l'Offre</h2>
+
+    <p style="text-align:center;">Voulez-vous vraiment supprimer :</p>
+
+    <h3 style="text-align:center; margin-bottom:20px;">{{ offre.titre }}</h3>
+
+    <form method="post" style="text-align:center;">
+        {% csrf_token %}
+
+        <button class="submit-btn" style="background:#e74c3c;">
+            <i class="fas fa-trash"></i> Supprimer définitivement
+        </button>
+
+        <a href="{% url 'Stage_condi:liste_offre' %}" class="submit-btn" style="background:#95a5a6; margin-top:10px;">Annuler</a>
+    </form>
+</div>
+{% endblock %}

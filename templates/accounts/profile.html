@@ -1,6 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block sidebar_menu %}
+    {% if user.role == "student" %}
+    <a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                
+    {% elif user.role == "doctor" %}
+    <a href="{% url 'accounts:doctor_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>              
+    {% elif user.role == "chef" %}
+    <a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>            
+    {% elif user.role == "responsable" %}
+    <a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                           
+    {% endif %}
+
+
+
+{% endblock %}
 {% block title %}Mon Profil{% endblock %}
 
 {% block extra_css %}
@@ -58,8 +84,8 @@
 
 
     <!-- === Champs Service & Hôpital selon rôle === -->
-{% if user.role == "chef" or user.role == "doctor" or user.role == "responsable" or user.role == "admin" %}
-<div class="profile-card">
+      {% if user.role == "chef" or user.role == "doctor" or user.role == "responsable" or user.role == "admin" %}
+    <div class="profile-card">
     <h2 class="profile-section-title">Profil {{ user.role|capfirst }}</h2>
 
     <div class="input-row">
@@ -79,8 +105,8 @@
                    class="input-field">
         </div>
     </div>
-</div>
-{% endif %}
+  </div>
+ {% endif %}
     <!-- Bouton save -->
         <div class="profile-actions">
             <button type="submit" class="btn edit-btn">Enregistrer les changements</button>
@@ -88,9 +114,5 @@
 
     </form>
 </div>
-
-
-
-
 
 {% endblock %}

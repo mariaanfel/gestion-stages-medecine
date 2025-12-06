@@ -23,11 +23,13 @@ from .views import root_redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # include accounts URLs
     path("accounts/", include("accounts.urls")),
 
-    # redirect root → /accounts/login/
+    path("stage/", include("Stage_condi.urls")),
+
     path("", root_redirect, name="root"),
+
+    
 ]
 
 

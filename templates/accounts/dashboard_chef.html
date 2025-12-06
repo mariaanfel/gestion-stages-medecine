@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% load static %}
 
@@ -5,15 +6,17 @@
 
 {% block sidebar_menu %}
 <!-- Menu spécifique chef de service avec titres recommandés -->
-<a href="{% url 'accounts:profile' %}" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-user"></i></div>
-    <div class="nav-text">Mon Profil</div>
-</a>
+ 
 
-<a href="#" class="nav-item">
+<a href="{% url 'Stage_condi:liste_offre' %}" class="nav-item">
     <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
     <div class="nav-text">Offres de Stage</div>
 </a>
+<a href="{% url 'Stage_condi:creer_offre' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+    <div class="nav-text">Créer une Offre</div>
+</a>
+
 
 <a href="#" class="nav-item">
     <div class="nav-icon"><i class="fas fa-inbox"></i></div>
@@ -39,6 +42,7 @@
     <div class="nav-icon"><i class="fas fa-bell"></i></div>
     <div class="nav-text">Notification</div>
 </a>
+
 {% endblock %}
 
 {% block content %}
@@ -74,20 +78,33 @@
         </div>
     </div>
 
-    <!-- Offres de Stage -->
-    <div class="dashboard-card chef-card">
-        <div class="card-header">
-            <h3 class="card-title">Offres de Stage</h3>
-            <div class="card-icon chef-icon">
-                <i class="fas fa-clipboard-list"></i>
-            </div>
+    
+
+    <div class="dashboard-card chef-card" onclick="window.location.href='{% url 'Stage_condi:creer_offre' %}'">
+    <div class="card-header">
+        <h3 class="card-title">Créer une Offre</h3>
+        <div class="card-icon chef-icon">
+            <i class="fas fa-plus-circle"></i>
         </div>
-        <div class="card-content">
-            <p class="card-description">Gérez les offres de stages du service.</p>
-            <span class="stat-badge">
-                {% if stats %}{{ stats.stages_proposes }}{% else %}5{% endif %} stages proposés
-            </span>
+    </div>
+    <div class="card-content">
+        <p class="card-description">Ajoutez une nouvelle offre de stage pour votre service.</p>
+        <span class="stat-badge">Nouvelle offre</span>
+    </div>
+</div>
+
+
+<div class="dashboard-card chef-card" onclick="window.location.href='{% url 'Stage_condi:liste_offre' %}'">
+    <div class="card-header">
+        <h3 class="card-title">Offres de Stage</h3>
+        <div class="card-icon chef-icon">
+            <i class="fas fa-edit"></i>
         </div>
+    </div>
+    <div class="card-content">
+        <p class="card-description">Modifier ou supprimer les offres existantes.</p>
+        <span class="stat-badge">Gestion des offres</span>
+    </div>
     </div>
 
     <!-- Candidatures Reçues -->

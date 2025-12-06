@@ -24,7 +24,7 @@
         <div class="logo-container">
             <a href="{% url 'accounts:login' %}">
                 <div class="logo">
-                    <i class="fas fa-hospital-alt"></i> Gestion Médicale
+                    <i class="fas fa-hospital-alt"></i> Gestion des stages Médicale
                 </div>
             </a>
         </div>
@@ -38,7 +38,7 @@
                     {{ user.username|first|upper }}
                 {% endif %}
             </div>
-            <div class="welcome-text">BONJOUR, {{ user.first_name|default:user.username|upper }}!</div>
+            <div class="welcome-text">BIENVENUE, {{ user.first_name|default:user.username|upper }}!</div>
             <div class="user-name">
                 {% if user.first_name and user.last_name %}
                     {{ user.first_name }} {{ user.last_name }}
@@ -71,9 +71,10 @@
                 {% endif %}
             </div>
         </div>
-
-        <div class="nav-menu">
+        <div class="sidebar-scroll">
+          <div class="nav-menu">
             {% block sidebar_menu %}{% endblock %}
+          </div>
         </div>
 
         <div class="sidebar-bottom">
