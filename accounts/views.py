@@ -1,6 +1,7 @@
 # accounts/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views import View
@@ -8,6 +9,11 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import RegistrationForm, LoginForm, StudentProfileForm, DoctorProfileForm, ChefServiceProfileForm, ResponsableHopitalProfileForm
 from .models import User, StudentProfile, DoctorProfile, ChefServiceProfile, ResponsableHopitalProfile
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url="accounts:login")
+def home_redirect(request):
+    return redirect(get_dashboard_url_name(request.user))
 
 # Fonctions de vérification des rôles
 def is_student(user): return user.role == "student"
@@ -15,6 +21,18 @@ def is_doctor(user): return user.role == "doctor"
 def is_chef(user): return user.role == "chef"
 def is_responsable(user): return user.role == "responsable"
 def is_admin(user): return user.role == "admin"
+
+def get_dashboard_url_name(user):
+    if user.role == "student":
+        return "accounts:student_dashboard"
+    elif user.role == "doctor":
+        return "accounts:doctor_dashboard"
+    elif user.role == "chef":
+        return "accounts:chef_dashboard"
+    elif user.role == "responsable":
+        return "accounts:responsable_dashboard"
+    else:
+        return "accounts:student_dashboard"
 
 class RegisterView(View):
     def get(self, request):
@@ -43,29 +61,23 @@ class RegisterView(View):
         return render(request, "accounts/register.html", {"form": form})
 
 class LoginView(View):
-    def get(self, request):
-        form = LoginForm()
+   def get(self, request):
+        # 🔴 Si déjà connecté → on redirige vers le bon dashboard
+        if request.user.is_authenticated:
+            return redirect(get_dashboard_url_name(request.user))
+
+        form = AuthenticationForm()
         return render(request, "accounts/login.html", {"form": form})
 
-    def post(self, request):
-        form = LoginForm(request.POST)
+   def post(self, request):
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-            user = authenticate(request, username=username, password=password)
+            user = form.get_user()
+            login(request, user)
 
-            if user:
-                login(request, user)
-                if user.role == "student":
-                    return redirect("accounts:student_dashboard")
-                elif user.role == "doctor":
-                    return redirect("accounts:doctor_dashboard")
-                elif user.role == "chef":
-                    return redirect("accounts:chef_dashboard")
-                elif user.role == "responsable":
-                    return redirect("accounts:responsable_dashboard")
-                elif user.role == "admin":
-                    return redirect("/admin/")
+            # Redirection après connexion en fonction du rôle
+            return redirect(get_dashboard_url_name(user))
+
         return render(request, "accounts/login.html", {"form": form})
 
 class LogoutView(View):

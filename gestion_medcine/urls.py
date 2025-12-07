@@ -18,7 +18,8 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from .views import root_redirect
+from accounts.views import home_redirect
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,7 +28,7 @@ urlpatterns = [
 
     path("stage/", include("Stage_condi.urls")),
 
-    path("", root_redirect, name="root"),
+    path("", home_redirect, name="home"), 
 
     
 ]

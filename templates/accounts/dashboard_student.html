@@ -5,7 +5,10 @@
 
 {% block sidebar_menu %}
 
-
+<a href="{% url 'Stage_condi:liste_offre' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+    <div class="nav-text">Offres de Stage</div>
+</a>
 <a href="#" class="nav-item">
     <div class="nav-icon"><i class="fas fa-briefcase"></i></div>
     <div class="nav-text">Mon Stage</div>
@@ -36,6 +39,18 @@
 <div class="cards-grid">
 
     <!-- Mon Stage -->
+     <div class="dashboard-card student-card" onclick="window.location.href='{% url 'Stage_condi:liste_offre' %}'">
+       <div class="card-header">
+        <h3 class="card-title">Offres de Stage</h3>
+        <div class="card-icon student-icon">
+            <i class="fas fa-edit"></i>
+        </div>
+     </div>
+    <div class="card-content">
+        <p class="card-description">consulter et postuler des stages</p>
+        <span class="stat-badge">Gestion des offres</span>
+    </div>
+    </div>
     <div class="dashboard-card student-card">
         <div class="card-header">
             <h3 class="card-title">Mon Stage</h3>
@@ -96,7 +111,7 @@
 
 <div class="alert alert-info">
     <i class="fas fa-info-circle"></i>
-    
+
     Prochain rendez-vous : Lundi 15 novembre - 14h30 avec votre encadrant
 </div>
 {% endblock %}

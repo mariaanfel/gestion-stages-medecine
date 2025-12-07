@@ -24,6 +24,8 @@ class RegistrationForm(UserCreationForm):
         model = User
         fields = ["username", "email", "role", "password1", "password2"]
 
+    
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(

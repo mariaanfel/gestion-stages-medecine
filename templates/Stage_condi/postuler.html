@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'Stage_condi/css/forms.css' %}">
+{% endblock %}
+
+{% block sidebar_menu %}
+{% if user.role == "student" %}
+    <a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                
+    {% elif user.role == "doctor" %}
+    <a href="{% url 'accounts:doctor_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>              
+    {% elif user.role == "chef" %}
+    <a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>            
+    {% elif user.role == "responsable" %}
+    <a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                           
+    {% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+ <div class="form-page">
+    <div class="form-card">
+        <h1 class="form-title">Postuler à ce stage</h1>
+        <p class="form-subtitle">
+            {{ offre.titre }} – {{ offre.service }} · {{ offre.hopital }}
+        </p>
+
+        <form method="post" enctype="multipart/form-data" class="styled-form">
+            {% csrf_token %}
+
+            <div class="form-group file-input-group">
+                {{ form.cv.label_tag }}
+                {{ form.cv }}
+                <p class="help-text">Formats acceptés : PDF, DOC, DOCX.</p>
+            </div>
+
+            <div class="form-group">
+                {{ form.lettre_motivation.label_tag }}
+                {{ form.lettre_motivation }}
+                <p class="help-text">Explique brièvement ta motivation pour ce stage.</p>
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'Stage_condi:detail_offre' offre.id %}" class="btn-secondary">Annuler</a>
+                <button type="submit" class="btn-primary">Envoyer ma candidature</button>
+            </div>
+        </form>
+    </div>
+ </div>
+{% endblock %}
