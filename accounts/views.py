@@ -1,4 +1,4 @@
-# accounts/views.py
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -10,6 +10,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import RegistrationForm, LoginForm, StudentProfileForm, DoctorProfileForm, ChefServiceProfileForm, ResponsableHopitalProfileForm
 from .models import User, StudentProfile, DoctorProfile, ChefServiceProfile, ResponsableHopitalProfile
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login   # <— important
+
+
+def get_dashboard_url_name(user):
+    if user.role == "student":
+        return "accounts:student_dashboard"
+    elif user.role == "doctor":
+        return "accounts:doctor_dashboard"
+    elif user.role == "chef":
+        return "accounts:chef_dashboard"
+    elif user.role == "responsable":
+        return "accounts:responsable_dashboard"
+    else:
+        return "accounts:student_dashboard" 
 
 @login_required(login_url="accounts:login")
 def home_redirect(request):
@@ -22,17 +36,6 @@ def is_chef(user): return user.role == "chef"
 def is_responsable(user): return user.role == "responsable"
 def is_admin(user): return user.role == "admin"
 
-def get_dashboard_url_name(user):
-    if user.role == "student":
-        return "accounts:student_dashboard"
-    elif user.role == "doctor":
-        return "accounts:doctor_dashboard"
-    elif user.role == "chef":
-        return "accounts:chef_dashboard"
-    elif user.role == "responsable":
-        return "accounts:responsable_dashboard"
-    else:
-        return "accounts:student_dashboard"
 
 class RegisterView(View):
     def get(self, request):
@@ -43,26 +46,15 @@ class RegisterView(View):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            login(request, user)
 
-            # Création automatique du profil selon le rôle
-            role = form.cleaned_data['role']
-
-            if role == "student":
-                StudentProfile.objects.create(user=user)
-            elif role == "doctor":
-                DoctorProfile.objects.create(user=user)
-            elif role == "chef":
-                ChefServiceProfile.objects.create(user=user)
-            elif role == "responsable":
-                ResponsableHopitalProfile.objects.create(user=user)
-
-            return redirect("accounts:login")
+            return redirect(get_dashboard_url_name(user))
 
         return render(request, "accounts/register.html", {"form": form})
 
 class LoginView(View):
    def get(self, request):
-        # 🔴 Si déjà connecté → on redirige vers le bon dashboard
+        
         if request.user.is_authenticated:
             return redirect(get_dashboard_url_name(request.user))
 
@@ -93,7 +85,10 @@ class ProfileView(View):
         if user.role == "student":
             profile = get_object_or_404(StudentProfile, user=user)
         elif user.role == "doctor":
-            profile = get_object_or_404(DoctorProfile, user=user)
+               dp = user.doctorprofile
+               dp.service = request.POST.get("service", dp.speciality)
+               dp.save()
+
         elif user.role == "chef":
             profile = get_object_or_404(ChefServiceProfile, user=user)
         elif user.role == "responsable":

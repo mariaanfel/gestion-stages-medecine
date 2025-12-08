@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from django.http import HttpResponseForbidden
-from .models import OffreStage, Candidature
-from .forms import OffreStageForm, CandidatureForm
+from .models import OffreStage, Candidature, Evaluation
+from .forms import OffreStageForm, CandidatureForm, EvaluationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 def is_chef(user):
@@ -12,17 +12,22 @@ def is_chef(user):
 def is_student(user):
     return user.is_authenticated and user.role == "student"
 
+def is_doctor(user):
+    return user.is_authenticated and user.role == "doctor"
+
 @user_passes_test(is_chef)
 def creer_offre(request):
     if request.method == "POST":
-        form = OffreStageForm(request.POST)
+        form = OffreStageForm(request.POST, user=request.user)
         if form.is_valid():
             offre = form.save(commit=False)
-            offre.superviseur = request.user   
+            offre.superviseur = request.user   # le chef qui crée l'offre
             offre.save()
-            return redirect('Stage_condi:liste_offre')
+            messages.success(request, "Offre de stage créée avec succès.")
+            return redirect("Stage_condi:liste_offre")
     else:
-        form = OffreStageForm()
+        form = OffreStageForm(user=request.user)
+
     return render(request, "Stage_condi/creer_offre.html", {"form": form})
 
 
@@ -39,12 +44,13 @@ def modifier_offre(request, id):
     offre = get_object_or_404(OffreStage, id=id)
 
     if request.method == "POST":
-        form = OffreStageForm(request.POST, request.FILES, instance=offre)
+        form = OffreStageForm(request.POST, instance=offre, user=request.user)
         if form.is_valid():
-            form.save()
+            form.save()  # superviseur ne change pas ici
             return redirect("Stage_condi:liste_offre")
     else:
-        form = OffreStageForm(instance=offre)
+        
+        form = OffreStageForm(instance=offre, user=request.user)
 
     return render(request, "Stage_condi/edit.html", {"form": form, "offre": offre})
 
@@ -140,3 +146,52 @@ def refuser_candidature(request, id):
 
     messages.info(request, "La candidature a été refusée.")
     return redirect("Stage_condi:liste_candidatures_chef")
+
+@user_passes_test(is_doctor)
+def liste_candidatures_medecin(request):
+    candidatures = Candidature.objects.filter(
+        offre__medecin_responsable=request.user
+    ).order_by("-date_postulation")
+
+    return render(
+        request,
+        "Stage_condi/liste_candidatures.html",
+        {"candidatures": candidatures}
+    )
+
+@user_passes_test(is_doctor)
+def evaluer_candidature(request, id):
+    candidature = get_object_or_404(Candidature, id=id)
+
+    # sécurité : le médecin ne peut évaluer que les candidatures de SES stages
+    if candidature.offre.medecin_responsable != request.user:
+        return HttpResponseForbidden("Vous n'êtes pas autorisé à évaluer cette candidature.")
+
+    evaluation = getattr(candidature, "evaluation", None)  # existe déjà ou non
+
+    if request.method == "POST":
+        form = EvaluationForm(request.POST, instance=evaluation)
+        if form.is_valid():
+            evaluation = form.save(commit=False)
+            evaluation.candidature = candidature
+            evaluation.medecin = request.user
+            evaluation.save()
+            messages.success(request, "Évaluation enregistrée.")
+            return redirect("Stage_condi:liste_candidatures_medecin")
+    else:
+        form = EvaluationForm(instance=evaluation)
+
+    return render(request, "Stage_condi/evaluer_candidature.html", {
+        "form": form,
+        "candidature": candidature,
+    })
+
+@login_required
+def historique_etudiant(request):
+    evaluations = Evaluation.objects.filter(
+        candidature__etudiant=request.user
+    ).order_by("-created_at")
+
+    return render(request, "Stage_condi/historique_etudiant.html", {
+        "evaluations": evaluations
+    })

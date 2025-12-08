@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Mes évaluations{% endblock %}
+{% block sidebar_menu %}
+{% if user.role == "student" %}
+    <a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                
+    {% elif user.role == "doctor" %}
+    <a href="{% url 'accounts:doctor_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>              
+    {% elif user.role == "chef" %}
+    <a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>            
+    {% elif user.role == "responsable" %}
+    <a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                           
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="main-content-with-sidebar candidatures-page">
+
+    <h1 class="candidatures-title">Mes évaluations</h1>
+    <p class="candidatures-subtitle">Retrouvez ici les évaluations reçues vos stages.</p>
+
+    {% if evaluations %}
+        <div class="cards-container">
+            {% for ev in evaluations %}
+                <div class="candidature-card">
+                    <div class="candidature-header-row">
+                        <div>
+                            <div class="candidature-offre-title">
+                                {{ ev.candidature.offre.titre }}
+                            </div>
+                            <div class="candidature-meta">
+                                <span>Médecin : {{ ev.medecin.username }}</span>
+                                <span>{{ ev.created_at|date:"d/m/Y" }}</span>
+                            </div>
+                        </div>
+
+                        <span class="status-pill status-acceptee">
+                            Note : {{ ev.note }}/20
+                        </span>
+                    </div>
+
+                    {% if ev.commentaire %}
+                        <div class="candidature-comment">
+                            <strong>Commentaire :</strong> {{ ev.commentaire }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucune évaluation reçue pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -9,7 +9,7 @@
     <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
     <div class="nav-text">Offres de Stage</div>
 </a>
-<a href="#" class="nav-item">
+<a href="{% url 'Stage_condi:liste_candidatures_etudiant' %}" class="nav-item">
     <div class="nav-icon"><i class="fas fa-briefcase"></i></div>
     <div class="nav-text">Mon Stage</div>
 </a>
@@ -33,7 +33,7 @@
 {% block content %}
 <div class="dashboard-header">
     <h1 class="dashboard-title">Tableau de Bord Étudiant</h1>
-    <p class="dashboard-subtitle">Gérez vos stages, évaluations et communications</p>
+    <p class="dashboard-subtitle"></p>
 </div>
 
 <div class="cards-grid">
@@ -51,7 +51,7 @@
         <span class="stat-badge">Gestion des offres</span>
     </div>
     </div>
-    <div class="dashboard-card student-card">
+    <div class="dashboard-card student-card" onclick="window.location.href='{% url 'Stage_condi:liste_candidatures_etudiant' %}'">
         <div class="card-header">
             <h3 class="card-title">Mon Stage</h3>
             <div class="card-icon student-icon">
@@ -65,7 +65,7 @@
     </div>
 
     <!-- Évaluations -->
-    <div class="dashboard-card student-card">
+    <div class="dashboard-card student-card" onclick="window.location.href='{% url 'Stage_condi:historique_etudiant' %}'">
         <div class="card-header">
             <h3 class="card-title">Mes Évaluations</h3>
             <div class="card-icon student-icon">
@@ -74,7 +74,7 @@
         </div>
         <div class="card-content">
             <p class="card-description">Suivez vos notes et votre progression.</p>
-            <span class="stat-badge">Moyenne: 15.5/20</span>
+            <span class="stat-badge"></span>
         </div>
     </div>
 
@@ -109,9 +109,4 @@
 
 
 
-<div class="alert alert-info">
-    <i class="fas fa-info-circle"></i>
-
-    Prochain rendez-vous : Lundi 15 novembre - 14h30 avec votre encadrant
-</div>
 {% endblock %}

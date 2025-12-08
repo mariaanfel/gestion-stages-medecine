@@ -11,7 +11,24 @@ class OffreStage(models.Model):
     specialite = models.CharField(max_length=100)
     date_debut = models.DateField()
     date_fin = models.DateField()
-    superviseur = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    
+    superviseur = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="offres_supervisees"
+    )
+
+   
+    medecin_responsable = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="offres_encadrees"
+    )
+
     archive = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -55,3 +72,23 @@ class Candidature(models.Model):
 
     def __str__(self):
         return f"Candidature de {self.etudiant.username} pour {self.offre.titre}"
+    
+
+class Evaluation(models.Model):
+    candidature = models.OneToOneField(
+        "Candidature",
+        on_delete=models.CASCADE,
+        related_name="evaluation",
+    )
+    medecin = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="evaluations_realisees",
+    )
+    note = models.IntegerField()  # ou models.PositiveSmallIntegerField()
+    commentaire = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Évaluation de {self.candidature.etudiant.username} pour {self.candidature.offre.titre}"

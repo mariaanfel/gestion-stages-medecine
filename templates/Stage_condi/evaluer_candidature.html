@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Modifier l'Offre{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'Stage_condi/css/forms.css' %}">
+{% endblock %}
 
+{% block title %}Évaluation{% endblock %}
 
 {% block sidebar_menu %}
 {% if user.role == "student" %}
@@ -29,17 +32,27 @@
 {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<div class="form-page">
+  <div class="form-card">
+    <h1 class="form-title">Évaluer l'étudiant</h1>
+    <p class="form-subtitle">
+      {{ candidature.etudiant.username }} – {{ candidature.offre.titre }}
+    </p>
 
-<div class="form-container">
-    <h2 class="form-title">Modifier l'Offre</h2>
-
-   <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-
-        <button type="submit" class="btn-submit">Modifier</button>
+    <form method="post" class="styled-form">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.note.label_tag }}
+        {{ form.note }}
+      </div>
+      <div class="form-group">
+        {{ form.commentaire.label_tag }}
+        {{ form.commentaire }}
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Enregistrer</button>
+      </div>
     </form>
+  </div>
 </div>
 {% endblock %}
-

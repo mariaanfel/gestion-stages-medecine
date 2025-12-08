@@ -6,25 +6,13 @@
 {% block sidebar_menu %}
 
 
-<a href="#" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-user-graduate"></i></div>
-    <div class="nav-text">Suivi</div>
-</a>
 
-<a href="#" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+<a href="{% url 'Stage_condi:liste_candidatures_medecin' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-inbox"></i></div>
     <div class="nav-text">Évaluations</div>
 </a>
 
-<a href="#" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-envelope"></i></div>
-    <div class="nav-text">Messages</div>
-</a>
 
-<a href="#" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-bell"></i></div>
-    <div class="nav-text">Notifications</div>
-</a>
 {% endblock %}
 
 {% block content %}
@@ -32,28 +20,15 @@
     <h1 class="dashboard-title">Tableau de Bord Médecin</h1>
     <p class="dashboard-subtitle">
         {% if profile %}
-            Spécialité: {{ profile.speciality }}
+            {{ profile.speciality }}
         {% endif %}
     </p>
 </div>
 
 <div class="cards-grid">
-    <!-- Suivi des étudiants -->
-    <div class="dashboard-card doctor-card">
-        <div class="card-header">
-            <h3 class="card-title">Suivi des étudiants</h3>
-            <div class="card-icon doctor-icon">
-                <i class="fas fa-user-graduate"></i>
-            </div>
-        </div>
-        <div class="card-content">
-            <p class="card-description">Consultez les étudiants assignés et leur progression.</p>
-            <span class="stat-badge">{{ stats.etudiants_assignes }} étudiants assignés</span>
-        </div>
-    </div>
-
+   
     <!-- Évaluations -->
-    <div class="dashboard-card doctor-card">
+    <div class="dashboard-card doctor-card" onclick="window.location.href='{% url 'Stage_condi:liste_candidatures_medecin' %}'">
         <div class="card-header">
             <h3 class="card-title">Évaluations</h3>
             <div class="card-icon doctor-icon">
@@ -61,7 +36,7 @@
             </div>
         </div>
         <div class="card-content">
-            <p class="card-description">Évaluez les rapports et stages en attente.</p>
+            <p class="card-description">Accéder aux étudiants en stage sous votre responsabilité</p>
             <span class="stat-badge">{{ stats.evaluations_en_attente }} évaluations à traiter</span>
         </div>
     </div>

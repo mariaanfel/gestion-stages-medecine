@@ -37,7 +37,7 @@
     <h1 class="dashboard-title">Dashboard Responsable d’Hôpital</h1>
     <p class="dashboard-subtitle">
         {% if user.responsablehopitalprofile %}
-            Hôpital: {{ user.responsablehopitalprofile.hopital }}
+            {{ user.responsablehopitalprofile.hopital }}
         {% endif %}
     </p>
 </div>

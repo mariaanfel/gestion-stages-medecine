@@ -105,6 +105,14 @@
                             </form>
                         </div>
                     {% endif %}
+
+                    {% if user.role == "doctor" and cand.offre.medecin_responsable == user %}
+                        <div class="candidature-actions">
+                           <a href="{% url 'Stage_condi:evaluer_candidature' cand.id %}" class="btn-accept">
+                            Évaluer
+                           </a>
+                         </div>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

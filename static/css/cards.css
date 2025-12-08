@@ -214,3 +214,21 @@
 .btn-refuse:hover {
     background: #c0392b;
 }
+
+
+.candidatures-page {
+    max-width: 1100px;      
+    margin: 0 auto;         
+}
+
+
+.candidatures-page .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.candidatures-page .card {
+    width: 100%;
+}

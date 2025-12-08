@@ -14,5 +14,9 @@ urlpatterns = [
     path("candidatures/recues/", views.liste_candidatures_chef, name="liste_candidatures_chef"),
     path("candidatures/<int:id>/accepter/", views.accepter_candidature, name="accepter_candidature"),
     path("candidatures/<int:id>/refuser/", views.refuser_candidature, name="refuser_candidature"),
+    path("candidatures/medecin/", views.liste_candidatures_medecin, name="liste_candidatures_medecin"),
+    path("candidatures/<int:id>/evaluer/", views.evaluer_candidature, name="evaluer_candidature"),
+    path("evaluations/miennes/", views.historique_etudiant, name="historique_etudiant"),
+
 
 ]
