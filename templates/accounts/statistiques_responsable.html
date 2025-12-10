@@ -1,0 +1,71 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block sidebar_menu %} 
+{%if user.role == "student" %}
+<a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
+  <div class="nav-icon"><i class="fas fa-home"></i></div>
+  <div class="nav-text">Dashboard</div>
+</a>
+{% elif user.role == "doctor" %}
+<a href="{% url 'accounts:doctor_dashboard' %}" class="nav-item">
+  <div class="nav-icon"><i class="fas fa-home"></i></div>
+  <div class="nav-text">Dashboard</div>
+</a>
+{% elif user.role == "chef" %}
+<a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+  <div class="nav-icon"><i class="fas fa-home"></i></div>
+  <div class="nav-text">Dashboard</div>
+</a>
+{% elif user.role == "responsable" %}
+<a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
+  <div class="nav-icon"><i class="fas fa-home"></i></div>
+  <div class="nav-text">Dashboard</div>
+</a>
+{% endif %} {% endblock %} {% block title %}Statistiques Hôpital{% endblock %}
+{% block content %}
+<div class="dashboard-header">
+  <h1>Statistiques Globales de l’Hôpital</h1>
+</div>
+
+<div class="cards-grid">
+  <div class="dashboard-card">
+    <h3>Offres Totales</h3>
+    <p>{{ stats.offres_total }}</p>
+  </div>
+
+  <div class="dashboard-card">
+    <h3>Candidatures Totales</h3>
+    <p>{{ stats.candidatures_totales }}</p>
+  </div>
+
+  <div class="dashboard-card">
+    <h3>Acceptées</h3>
+    <p>{{ stats.acceptees }}</p>
+  </div>
+
+  <div class="dashboard-card">
+    <h3>En Attente</h3>
+    <p>{{ stats.en_attente }}</p>
+  </div>
+</div>
+
+<h2>Comparaison des Services</h2>
+<table class="table">
+  <tr>
+    <th>Service</th>
+    <th>Candidatures Totales</th>
+  </tr>
+
+  {% for item in stats_par_service %}
+  <tr>
+    <td>{{ item.offre__specialite }}</td>
+    <td>{{ item.total }}</td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="2">Aucune donnée</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

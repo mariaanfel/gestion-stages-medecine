@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 {% load static %}
 
@@ -6,7 +5,6 @@
 
 {% block sidebar_menu %}
 <!-- Menu spécifique chef de service avec titres recommandés -->
- 
 
 <a href="{% url 'Stage_condi:liste_offre' %}" class="nav-item">
     <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
@@ -17,28 +15,27 @@
     <div class="nav-text">Créer une Offre</div>
 </a>
 
-
 <a href="{% url 'Stage_condi:liste_candidatures_etudiant' %}" class="nav-item">
     <div class="nav-icon"><i class="fas fa-inbox"></i></div>
     <div class="nav-text">Candidatures Reçues</div>
 </a>
 
-<a href="#" class="nav-item">
+<a href="#" class="nav-item"></a>
     <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
     <div class="nav-text">Planning</div>
 </a>
 
-<a href="#" class="nav-item">
+<a href="{% url 'accounts:ChefStatistiquesView' %}" class="nav-item"></a>
     <div class="nav-icon"><i class="fas fa-chart-pie"></i></div>
     <div class="nav-text">Statistiques</div>
 </a>
 
-<a href="#" class="nav-item">
+<a href="#" class="nav-item"></a>
     <div class="nav-icon"><i class="fas fa-envelope"></i></div>
     <div class="nav-text">Message</div>
 </a>
 
-<a href="#" class="nav-item">
+<a href="#" class="nav-item"></a>
     <div class="nav-icon"><i class="fas fa-bell"></i></div>
     <div class="nav-text">Notification</div>
 </a>
@@ -62,38 +59,35 @@
 </div>
 
 <div class="cards-grid">
-    
-<div class="dashboard-card chef-card" onclick="window.location.href='{% url 'Stage_condi:liste_offre' %}'">
-       <div class="card-header">
-        <h3 class="card-title">Offres de Stage</h3>
-        <div class="card-icon chef-icon">
-            <i class="fas fa-edit"></i>
+
+    <div class="dashboard-card chef-card" onclick="window.location.href='{% url 'Stage_condi:liste_offre' %}'">
+        <div class="card-header">
+            <h3 class="card-title">Offres de Stage</h3>
+            <div class="card-icon chef-icon">
+                <i class="fas fa-edit"></i>
+            </div>
         </div>
-     </div>
-    <div class="card-content">
-        <p class="card-description">Modifier ou supprimer les offres existantes.</p>
-        <span class="stat-badge">Gestion des offres</span>
+        <div class="card-content">
+            <p class="card-description">Modifier ou supprimer les offres existantes.</p>
+            <span class="stat-badge">Gestion des offres</span>
+        </div>
     </div>
-    </div>
-    
+
     <div class="dashboard-card chef-card" onclick="window.location.href='{% url 'Stage_condi:creer_offre' %}'">
-    <div class="card-header">
-        <h3 class="card-title">Créer une Offre</h3>
-        <div class="card-icon chef-icon">
-            <i class="fas fa-plus-circle"></i>
+        <div class="card-header">
+            <h3 class="card-title">Créer une Offre</h3>
+            <div class="card-icon chef-icon">
+                <i class="fas fa-plus-circle"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Ajoutez une nouvelle offre de stage pour votre service.</p>
+            <span class="stat-badge">Nouvelle offre</span>
         </div>
     </div>
-    <div class="card-content">
-        <p class="card-description">Ajoutez une nouvelle offre de stage pour votre service.</p>
-        <span class="stat-badge">Nouvelle offre</span>
-    </div>
-    </div>
-
-
-   
 
     <!-- Candidatures Reçues -->
-    <div class="dashboard-card chef-card"onclick="window.location.href='{% url 'Stage_condi:liste_candidatures_chef' %}'">
+    <div class="dashboard-card chef-card" onclick="window.location.href='{% url 'Stage_condi:liste_candidatures_chef' %}'">
         <div class="card-header">
             <h3 class="card-title">Candidatures Reçues</h3>
             <div class="card-icon chef-icon">
@@ -103,7 +97,7 @@
         <div class="card-content">
             <p class="card-description">Consultez toutes les candidatures reçues pour les stages.</p>
             <span class="stat-badge">
-                {% if stats %}{{ stats.candidatures_reçues }}{% else %}3{% endif %} candidatures
+                {{ stats.candidatures_recues }} candidatures
             </span>
         </div>
     </div>
@@ -118,12 +112,14 @@
         </div>
         <div class="card-content">
             <p class="card-description">Organisez les horaires et réunions du service.</p>
-            <span class="stat-badge">{{ stats.reunions_cette_semaine|default:"1" }} réunion cette semaine</span>
+            <span class="stat-badge">
+                {{ stats.reunions_cette_semaine }} réunion(s) cette semaine
+            </span>
         </div>
     </div>
 
     <!-- Statistiques -->
-    <div class="dashboard-card chef-card">
+    <div class="dashboard-card chef-card" onclick="window.location.href='{% url 'accounts:ChefStatistiquesView' %}'">
         <div class="card-header">
             <h3 class="card-title">Statistiques</h3>
             <div class="card-icon chef-icon">
@@ -132,7 +128,9 @@
         </div>
         <div class="card-content">
             <p class="card-description">Analyse rapide des performances du service.</p>
-            <span class="stat-badge">85% taux d'occupation</span>
+            <span class="stat-badge">
+                {{ stats.taux_occupation }}% taux d'occupation
+            </span>
         </div>
     </div>
 
@@ -160,7 +158,9 @@
         </div>
         <div class="card-content">
             <p class="card-description">Restez informé des alertes et événements du service.</p>
-            <span class="stat-badge">{{ stats.alertes_en_cours|default:"2" }} notifications</span>
+            <span class="stat-badge">
+                {{ stats.alertes_en_cours }} notifications
+            </span>
         </div>
     </div>
 </div>

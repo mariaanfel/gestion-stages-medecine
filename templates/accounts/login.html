@@ -14,6 +14,12 @@
 
     <form method="post">
         {% csrf_token %}
+
+        <!-- Champ next caché si redirection -->
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+
         <div class="input-group">
             <i class="fa-solid fa-user icon"></i>
             {{ form.username }}

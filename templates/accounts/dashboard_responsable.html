@@ -1,124 +1,125 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block title %}Dashboard Responsable d’Hôpital{% endblock %}
-
-{% block sidebar_menu %}
+{% extends "base.html" %} {% load static %} {% block title %}Dashboard
+Responsable d’Hôpital{% endblock %} {% block sidebar_menu %}
 <!-- Menu spécifique responsable hospitalier avec titres recommandés -->
 
+<span class="stat-badge"> {{ stats.services_geres }} services gérés </span>
+
 <a href="#" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-hospital"></i></div>
-    <div class="nav-text">Gestion des Services</div>
+  <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
+  <div class="nav-text">Planning Général de l’Hôpital</div>
+</a>
+
+
+<a href="{% url 'accounts:ResponsableStatistiquesView' %}" class="nav-item">
+  <div class="nav-icon"><i class="fas fa-chart-pie"></i></div>
+  <div class="nav-text">Statistiques</div>
 </a>
 
 <a href="#" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
-    <div class="nav-text">Planning Général de l’Hôpital</div>
-</a>
-
-<a href="#" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-briefcase"></i></div>
-    <div class="nav-text">Offres de Stage</div>
-</a>
-
-<a href="#" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-chart-pie"></i></div>
-    <div class="nav-text">Statistiques</div>
-</a>
-
-<a href="#" class="nav-item">
-    <div class="nav-icon"><i class="fas fa-bell"></i></div>
-    <div class="nav-text">Alertes & Notifications</div>
+  <div class="nav-icon"><i class="fas fa-bell"></i></div>
+  <div class="nav-text">Alertes & Notifications</div>
 </a>
 {% endblock %}
-
 {% block content %}
 <div class="dashboard-header">
-    <h1 class="dashboard-title">Dashboard Responsable d’Hôpital</h1>
-    <p class="dashboard-subtitle">
-        {% if user.responsablehopitalprofile %}
-            {{ user.responsablehopitalprofile.hopital }}
-        {% endif %}
-    </p>
+  <h1 class="dashboard-title">Dashboard Responsable d’Hôpital</h1>
+  
 </div>
 
 <!-- Alertes et notifications -->
 <div class="alert alert-danger">
-    <i class="fas fa-exclamation-circle"></i>
-    3 alertes nécessitent votre intervention
+  <i class="fas fa-exclamation-circle"></i>
+  {{ stats.alertes_en_cours }} alertes nécessitent votre intervention
 </div>
 
 <div class="cards-grid">
-
-    <!-- Gestion des Services -->
-    <div class="dashboard-card responsable-card">
-        <div class="card-header">
-            <h3 class="card-title">Gestion des Services</h3>
-            <div class="card-icon responsable-icon">
-                <i class="fas fa-hospital"></i>
-            </div>
-        </div>
-        <div class="card-content">
-            <p class="card-description">Surveillez l'ensemble des services hospitaliers.</p>
-            <span class="stat-badge">8 services gérés</span>
-        </div>
+  <!-- Gestion des Services -->
+  <div class="dashboard-card responsable-card">
+    <div class="card-header">
+      <h3 class="card-title">Gestion des Services</h3>
+      <div class="card-icon responsable-icon">
+        <i class="fas fa-hospital"></i>
+      </div>
     </div>
-
-    <!-- Planning Général -->
-    <div class="dashboard-card responsable-card">
-        <div class="card-header">
-            <h3 class="card-title">Planning Général de l’Hôpital</h3>
-            <div class="card-icon responsable-icon">
-                <i class="fas fa-calendar-alt"></i>
-            </div>
-        </div>
-        <div class="card-content">
-            <p class="card-description">Organisez les activités de tout l’hôpital.</p>
-            <span class="stat-badge">5 réunions cette semaine</span>
-        </div>
+    <div class="card-content">
+      <p class="card-description">
+        Surveillez l'ensemble des services hospitaliers.
+      </p>
+      <span class="stat-badge">
+        {{ stats.services_geres }} services gérés
+      </span>
     </div>
+  </div>
 
-    <!-- Offres de Stage -->
-    <div class="dashboard-card responsable-card">
-        <div class="card-header">
-            <h3 class="card-title">Offres de Stage</h3>
-            <div class="card-icon responsable-icon">
-                <i class="fas fa-briefcase"></i>
-            </div>
-        </div>
-        <div class="card-content">
-            <p class="card-description">Gérez toutes les offres disponibles pour les étudiants.</p>
-            <span class="stat-badge">12 offres disponibles</span>
-        </div>
+  <!-- Planning Général -->
+  <div class="dashboard-card responsable-card">
+    <div class="card-header">
+      <h3 class="card-title">Planning Général de l’Hôpital</h3>
+      <div class="card-icon responsable-icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
     </div>
-
-    <!-- Statistiques -->
-    <div class="dashboard-card responsable-card">
-        <div class="card-header">
-            <h3 class="card-title">Statistiques</h3>
-            <div class="card-icon responsable-icon">
-                <i class="fas fa-chart-pie"></i>
-            </div>
-        </div>
-        <div class="card-content">
-            <p class="card-description">Rapports, analyses et données de performance.</p>
-            <span class="stat-badge">12 rapports disponibles</span>
-        </div>
+    <div class="card-content">
+      <p class="card-description">Organisez les activités de tout l’hôpital.</p>
+      <span class="stat-badge">5 réunions cette semaine</span>
     </div>
+  </div>
 
-    <!-- Alertes & Notifications -->
-    <div class="dashboard-card responsable-card">
-        <div class="card-header">
-            <h3 class="card-title">Alertes & Notifications</h3>
-            <div class="card-icon responsable-icon">
-                <i class="fas fa-bell"></i>
-            </div>
-        </div>
-        <div class="card-content">
-            <p class="card-description">Suivez toutes les alertes et notifications importantes.</p>
-            <span class="stat-badge">3 alertes en cours</span>
-        </div>
+  <!-- Offres de Stage -->
+  <div class="dashboard-card responsable-card">
+    <div class="card-header">
+      <h3 class="card-title">Offres de Stage</h3>
+      <div class="card-icon responsable-icon">
+        <i class="fas fa-briefcase"></i>
+      </div>
     </div>
+    <div class="card-content">
+      <p class="card-description">
+        Gérez toutes les offres disponibles pour les étudiants.
+      </p>
+      <span class="stat-badge">
+        {{ stats.offres_disponibles }} offres disponibles
+      </span>
+    </div>
+  </div>
 
+  <!-- Statistiques -->
+  <div
+    class="dashboard-card responsable-card"
+    onclick="window.location.href='{% url 'accounts:ResponsableStatistiquesView' %}'"
+  >
+    <div class="card-header">
+      <h3 class="card-title">Statistiques</h3>
+      <div class="card-icon responsable-icon">
+        <i class="fas fa-chart-pie"></i>
+      </div>
+    </div>
+    <div class="card-content">
+      <p class="card-description">
+        Rapports, analyses et données de performance.
+      </p>
+      <span class="stat-badge">
+        {{ stats.stages_actifs }} stages en cours
+      </span>
+    </div>
+  </div>
+
+  <!-- Alertes & Notifications -->
+  <div class="dashboard-card responsable-card">
+    <div class="card-header">
+      <h3 class="card-title">Alertes & Notifications</h3>
+      <div class="card-icon responsable-icon">
+        <i class="fas fa-bell"></i>
+      </div>
+    </div>
+    <div class="card-content">
+      <p class="card-description">
+        Suivez toutes les alertes et notifications importantes.
+      </p>
+      <span class="stat-badge">
+        {{ stats.alertes_en_cours }} alertes en cours
+      </span>
+    </div>
+  </div>
 </div>
 {% endblock %}

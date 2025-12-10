@@ -1,5 +1,6 @@
 # accounts/urls.py
 from django.urls import path
+from . import views 
 from django.views.generic import RedirectView
 from .views import (
     RegisterView, LoginView, LogoutView,
@@ -28,4 +29,12 @@ urlpatterns = [
     path("dashboard/doctor/", DoctorDashboard.as_view(), name="doctor_dashboard"),
     path("dashboard/chef/", ChefDashboard.as_view(), name="chef_dashboard"),
     path("dashboard/responsable/", ResponsableDashboard.as_view(), name="responsable_dashboard"),
+
+
+    
+ #Statistiques
+    path("dashboard/chef/statistiques/", views.ChefStatistiquesView.as_view(), name="ChefStatistiquesView"),
+    path("dashboard/responsable/statistiques/",views.ResponsableStatistiquesView.as_view(),name="ResponsableStatistiquesView"),
+    path("dashboard/admin/", views.AdminDashboard.as_view(), name="admin_dashboard"),
+
 ]

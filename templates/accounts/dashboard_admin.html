@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard Administrateur{% endblock %}
+
+{% block sidebar_menu %}
+<a href="{% url 'accounts:admin_dashboard' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-tachometer-alt"></i></div>
+    <div class="nav-text">Vue d’ensemble</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-users-cog"></i></div>
+    <div class="nav-text">Gérer les utilisateurs</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-briefcase"></i></div>
+    <div class="nav-text">Gérer les offres de stage</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+    <div class="nav-text">Statistiques globales</div>
+</a>
+
+<a href="#" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-shield-alt"></i></div>
+    <div class="nav-text">Sécurité & logs</div>
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Dashboard Administrateur</h1>
+    <p class="dashboard-subtitle">
+        Gestion globale du système
+    </p>
+</div>
+
+<div class="cards-grid">
+
+    <!-- Comptes utilisateurs -->
+    <div class="dashboard-card admin-card">
+        <div class="card-header">
+            <h3 class="card-title">Utilisateurs</h3>
+            <div class="card-icon">
+                <i class="fas fa-users"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Vue globale des comptes.</p>
+            <span class="stat-badge">
+                {{ stats.total_users }} utilisateurs
+            </span>
+            <ul class="small-list">
+                <li>{{ stats.total_students }} étudiants</li>
+                <li>{{ stats.total_doctors }} médecins</li>
+                <li>{{ stats.total_chefs }} chefs de service</li>
+                <li>{{ stats.total_responsables }} responsables d’hôpital</li>
+                <li>{{ stats.total_admins }} admins du site</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Offres de stage -->
+    <div class="dashboard-card admin-card">
+        <div class="card-header">
+            <h3 class="card-title">Offres de Stage</h3>
+            <div class="card-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Suivi de toutes les offres.</p>
+            <span class="stat-badge">
+                {{ stats.offres_total }} offres
+            </span>
+            <ul class="small-list">
+                <li>{{ stats.offres_actives }} actives</li>
+                <li>{{ stats.offres_archivees }} archivées</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Candidatures -->
+    <div class="dashboard-card admin-card">
+        <div class="card-header">
+            <h3 class="card-title">Candidatures</h3>
+            <div class="card-icon">
+                <i class="fas fa-inbox"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="card-description">Suivi global des candidatures.</p>
+            <span class="stat-badge">
+                {{ stats.candidatures_total }} candidatures
+            </span>
+            <ul class="small-list">
+                <li>{{ stats.candidatures_en_attente }} en attente</li>
+                <li>{{ stats.candidatures_acceptees }} acceptées</li>
+                <li>{{ stats.candidatures_refusees }} refusées</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Derniers utilisateurs créés -->
+    <div class="dashboard-card admin-card">
+        <div class="card-header">
+            <h3 class="card-title">Derniers comptes créés</h3>
+            <div class="card-icon">
+                <i class="fas fa-user-clock"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <ul class="small-list">
+                {% for u in derniers_utilisateurs %}
+                    <li>{{ u.username }} – {{ u.role }} – {{ u.date_joined|date:"d/m/Y H:i" }}</li>
+                {% empty %}
+                    <li>Aucun utilisateur récent.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
