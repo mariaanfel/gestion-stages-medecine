@@ -87,31 +87,6 @@ class LoginView(View):
             user = form.get_user()
             login(request, user)
 
-            # 🔔 Notifications après login, selon le rôle
-            if user.role == "student":
-                notify_code(
-                    user,
-                    code="STUDENT_LOGIN_SUCCESS",
-                    context={},
-                    category="auth",
-                    level="success",
-                )
-            elif user.role in ["chef", "doctor", "responsable"]:
-                notify_code(
-                    user,
-                    code="HOSPITAL_LOGIN_SUCCESS",
-                    context={},
-                    category="auth",
-                    level="success",
-                )
-            elif user.role == "admin":
-                notify_code(
-                    user,
-                    code="ADMIN_LOGIN_SUCCESS",
-                    context={},
-                    category="auth",
-                    level="success",
-                )
 
             # ⚠️ ON IGNORE COMPLETEMENT "next" POUR CASSER LA BOUCLE
             return redirect(get_dashboard_url_name(user))
