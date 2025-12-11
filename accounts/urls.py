@@ -5,7 +5,11 @@ from django.views.generic import RedirectView
 from .views import (
     RegisterView, LoginView, LogoutView,
     ProfileView, ProfileEditView,
-    StudentDashboard, DoctorDashboard, ChefDashboard, ResponsableDashboard
+    StudentDashboard, DoctorDashboard, ChefDashboard, ResponsableDashboard,AdminUserListView,
+    AdminUserUpdateView,
+    AdminUserCreateView,
+    AdminUserDeleteView,
+    
 )
 
 app_name = 'accounts'
@@ -36,5 +40,10 @@ urlpatterns = [
     path("dashboard/chef/statistiques/", views.ChefStatistiquesView.as_view(), name="ChefStatistiquesView"),
     path("dashboard/responsable/statistiques/",views.ResponsableStatistiquesView.as_view(),name="ResponsableStatistiquesView"),
     path("dashboard/admin/", views.AdminDashboard.as_view(), name="admin_dashboard"),
+
+    path("admin/utilisateurs/", AdminUserListView.as_view(), name="admin_users"),
+    path("admin/utilisateurs/nouveau/", AdminUserCreateView.as_view(), name="admin_user_create"),
+    path("admin/utilisateurs/<int:pk>/", AdminUserUpdateView.as_view(), name="admin_user_edit"),
+    path("admin/utilisateurs/<int:pk>/supprimer/", AdminUserDeleteView.as_view(), name="admin_user_delete"),
 
 ]

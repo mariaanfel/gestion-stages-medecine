@@ -19,29 +19,17 @@
     <div class="nav-icon"><i class="fas fa-inbox"></i></div>
     <div class="nav-text">Candidatures Reçues</div>
 </a>
-
-<a href="#" class="nav-item"></a>
-    <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
-    <div class="nav-text">Planning</div>
-</a>
-
-<a href="{% url 'accounts:ChefStatistiquesView' %}" class="nav-item"></a>
+<a href="{% url 'accounts:ChefStatistiquesView' %}" class="nav-item">
     <div class="nav-icon"><i class="fas fa-chart-pie"></i></div>
     <div class="nav-text">Statistiques</div>
 </a>
 
-<a href="#" class="nav-item"></a>
-    <div class="nav-icon"><i class="fas fa-envelope"></i></div>
-    <div class="nav-text">Message</div>
-</a>
+
+
 
 <a href="{% url 'Comm_notif:liste' %}" class="nav-item">
     <div class="nav-icon"><i class="fas fa-bell"></i></div>
     <div class="nav-text">Notifications</div>
-</a>
-
-    <div class="nav-icon"><i class="fas fa-bell"></i></div>
-    <div class="nav-text">Notification</div>
 </a>
 
 {% endblock %}
@@ -56,11 +44,6 @@
     </p>
 </div>
 
-<!-- Notifications -->
-<div class="alert alert-warning">
-    <i class="fas fa-bell"></i>
-    2 nouvelles demandes de stage en attente de validation
-</div>
 
 <div class="cards-grid">
 

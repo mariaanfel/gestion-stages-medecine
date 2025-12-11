@@ -11,6 +11,10 @@
     <div class="nav-icon"><i class="fas fa-inbox"></i></div>
     <div class="nav-text">Évaluations</div>
 </a>
+<a href="{% url 'Comm_notif:liste' %}" class="nav-item">
+    <div class="nav-icon"><i class="fas fa-bell"></i></div>
+    <div class="nav-text">Notifications</div>
+</a>
 
 
 {% endblock %}
@@ -56,7 +60,7 @@
     </div>
 
     <!-- Notifications -->
-    <div class="dashboard-card doctor-card">
+    <div class="dashboard-card doctor-card"onclick="window.location.href='{% url 'Comm_notif:liste' %}'">
         <div class="card-header">
             <h3 class="card-title">Notifications</h3>
             <div class="card-icon doctor-icon">

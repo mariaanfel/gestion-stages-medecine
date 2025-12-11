@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/notifications.css' %}">
+{% endblock %}
 
 {% block title %}Mes notifications{% endblock %}
 {% block sidebar_menu %} 
@@ -27,26 +30,62 @@
 {% endblock %} 
 
 {% block content %}
-<div class="dashboard-header">
-    <h1 class="dashboard-title">Mes notifications</h1>
-</div>
+<div class="notif-page">
+    <div class="notif-header">
+        <div>
+            <h1 class="notif-title">Mes notifications</h1>
+            <p class="notif-subtitle">
+                Retrouvez ici les dernières informations concernant vos stages, candidatures et évaluations.
+            </p>
+        </div>
+        <div class="notif-meta">
+            <span class="notif-count">
+                {{ notifications|length }} notification(s)
+            </span>
+        </div>
+    </div>
 
-<ul class="notification-list">
-    {% for notif in notifications %}
-        <li class="notification-item {% if not notif.is_read %}notification-unread{% endif %}">
-            <div class="notification-header">
-                <span class="notification-title">{{ notif.title }}</span>
-                <span class="notification-date">{{ notif.created_at|date:"d/m/Y H:i" }}</span>
+    <div class="notif-list">
+        {% for notif in notifications %}
+            <div class="notif-item {% if not notif.is_read %}notif-item--unread{% endif %}">
+                <!-- Petit rond à gauche -->
+                <div class="notif-icon-wrap">
+                    <div class="notif-icon"></div>
+                </div>
+
+                <!-- Contenu principal -->
+                <div class="notif-content">
+                    <div class="notif-top-row">
+                        <span class="notif-title-text">{{ notif.title }}</span>
+
+                        {# Badge pour le niveau si tu as un champ level, sinon tu peux le retirer #}
+                        {% if notif.level %}
+                            <span class="notif-badge notif-badge--{{ notif.level|default:'info' }}">
+                                {{ notif.level|title }}
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <p class="notif-message">
+                        {{ notif.message }}
+                    </p>
+
+                    <div class="notif-bottom-row">
+                        <span class="notif-date">
+                            {{ notif.created_at|date:"d/m/Y H:i" }}
+                        </span>
+
+                        {% if notif.url %}
+                            <a href="{{ notif.url }}" class="notif-link">Voir le détail</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            <div class="notification-body">
-                <p>{{ notif.message }}</p>
-                {% if notif.url %}
-                    <a href="{{ notif.url }}" class="btn-link">Voir le détail</a>
-                {% endif %}
+        {% empty %}
+            <div class="notif-empty">
+                <p>Aucune notification pour le moment.</p>
             </div>
-        </li>
-    {% empty %}
-        <li>Aucune notification pour le moment.</li>
-    {% endfor %}
-</ul>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

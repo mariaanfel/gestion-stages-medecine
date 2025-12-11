@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Créer un utilisateur{% endblock %}
+{% block sidebar_menu %}
+    {% if user.role == "student" %}
+    <a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                
+    {% elif user.role == "doctor" %}
+    <a href="{% url 'accounts:doctor_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>              
+    {% elif user.role == "chef" %}
+    <a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>            
+    {% elif user.role == "responsable" %}
+    <a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>    
+        {% elif user.role == "admin" %}
+    <a href="{% url 'accounts:admin_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                        
+    {% endif %}
+
+
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Créer un nouvel utilisateur</h1>
+    <p class="dashboard-subtitle">
+        Remplissez les informations de base pour créer un compte.
+    </p>
+</div>
+
+<form method="post" class="form-card">
+    {% csrf_token %}
+    
+    {{ form.non_field_errors }}
+
+    <div class="form-group">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {{ form.username.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {{ form.email.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.role.label_tag }}
+        {{ form.role }}
+        {{ form.role.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        {{ form.first_name.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+        {{ form.last_name.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+    </div>
+
+    <div class="form-group">
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+    </div>
+
+    <button type="submit" class="btn-primary">Créer l’utilisateur</button>
+    <a href="{% url 'accounts:admin_users' %}" class="btn-link">Annuler</a>
+</form>
+{% endblock %}

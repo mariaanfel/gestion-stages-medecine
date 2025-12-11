@@ -17,7 +17,13 @@ def is_student(user):
 def is_doctor(user):
     return user.is_authenticated and user.role == "doctor"
 
-@user_passes_test(is_chef)
+def is_admin(user):
+    return user.is_authenticated and getattr(user, "role", None) == "admin"
+
+def is_chef_or_admin(user):
+    return user.is_authenticated and getattr(user, "role", None) in ["chef", "admin"]
+
+@user_passes_test(is_chef_or_admin)
 def creer_offre(request):
     if request.method == "POST":
         form = OffreStageForm(request.POST, user=request.user)
@@ -41,7 +47,7 @@ def detail_offre(request, id):
     offre = get_object_or_404(OffreStage, id=id)
     return render(request, "Stage_condi/detail_offre.html", {"offre": offre})
 
-@user_passes_test(is_chef)
+@user_passes_test(is_chef_or_admin)
 def modifier_offre(request, id):
     offre = get_object_or_404(OffreStage, id=id)
 
@@ -57,7 +63,7 @@ def modifier_offre(request, id):
     return render(request, "Stage_condi/edit.html", {"form": form, "offre": offre})
 
 
-@user_passes_test(is_chef)
+@user_passes_test(is_chef_or_admin)
 def supprimer_offre(request, id):
     offre = get_object_or_404(OffreStage, id=id)
 
@@ -128,7 +134,7 @@ def liste_candidatures_etudiant(request):
     return render(request, 'Stage_condi/liste_candidatures.html', {'candidatures': candidatures})
 
 
-@user_passes_test(is_chef)
+@user_passes_test(is_chef_or_admin)
 def liste_candidatures_chef(request):
     candidatures = Candidature.objects.filter(
         offre__superviseur=request.user
@@ -137,7 +143,7 @@ def liste_candidatures_chef(request):
 
 
 
-@user_passes_test(is_chef)
+@user_passes_test(is_chef_or_admin)
 def accepter_candidature(request, id):
     candidature = get_object_or_404(Candidature, id=id)
 
@@ -166,7 +172,7 @@ def accepter_candidature(request, id):
     return redirect("Stage_condi:liste_candidatures_chef")
 
 
-@user_passes_test(is_chef)
+@user_passes_test(is_chef_or_admin)
 def refuser_candidature(request, id):
     candidature = get_object_or_404(Candidature, id=id)
 
@@ -244,3 +250,45 @@ def historique_etudiant(request):
     })
 
 
+@login_required
+def detail_candidature(request, id):
+    """
+    Affiche tous les détails d'une candidature :
+    - infos de l'offre
+    - infos de l'étudiant
+    - CV, lettre de motivation
+    - statut, dates, commentaires...
+    """
+
+    candidature = get_object_or_404(Candidature, id=id)
+    user = request.user
+
+    # --- Sécurité : qui a le droit de voir quoi ? ---
+    allowed = False
+
+    # 1) L'étudiant propriétaire
+    if user.role == "student" and candidature.etudiant_id == user.id:
+        allowed = True
+
+    # 2) Le chef de service qui supervise l'offre
+    elif user.role == "chef" and candidature.offre.superviseur_id == user.id:
+        allowed = True
+
+    # 3) Le médecin responsable de l'offre (si ce champ existe chez toi)
+    elif user.role == "doctor":
+        medecin_resp_id = getattr(candidature.offre, "medecin_responsable_id", None)
+        if medecin_resp_id == user.id:
+            allowed = True
+
+    # 4) Responsable d'hôpital ou admin : accès global
+    elif user.role in ["responsable", "admin"]:
+        allowed = True
+
+    if not allowed:
+        return HttpResponseForbidden("Vous n'êtes pas autorisé à consulter cette candidature.")
+
+    # --- Affichage ---
+    context = {
+        "candidature": candidature,
+    }
+    return render(request, "Stage_condi/detail_candidature.html", context)

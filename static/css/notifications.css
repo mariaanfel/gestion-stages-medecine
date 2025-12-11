@@ -1,0 +1,189 @@
+/* ===== Page Notifications ===== */
+
+.notif-page {
+    padding: 2.5rem 3rem;
+    min-height: 100vh;
+    background: #f4f7fb;
+}
+
+/* Header */
+.notif-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.notif-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.3rem;
+}
+
+.notif-subtitle {
+    font-size: 0.95rem;
+    color: #6b7280;
+}
+
+.notif-meta {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.notif-count {
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: #e5edff;
+    color: #1d4ed8;
+    font-weight: 600;
+}
+
+/* ===== Liste ===== */
+
+.notif-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+/* Un item */
+.notif-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(209, 213, 219, 0.6);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.notif-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+    border-color: #c7d2fe;
+}
+
+/* Non lu */
+.notif-item--unread {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+/* Icone gauche */
+.notif-icon-wrap {
+    padding-top: 0.2rem;
+}
+
+.notif-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: #3b82f6;
+}
+
+.notif-item--unread .notif-icon {
+    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.18);
+}
+
+/* Contenu */
+.notif-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.notif-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.notif-title-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.notif-message {
+    font-size: 0.93rem;
+    color: #4b5563;
+    margin: 0.2rem 0 0.4rem;
+}
+
+/* Bas */
+.notif-bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.notif-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.notif-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #2563eb;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.06);
+    border: 1px solid rgba(191, 219, 254, 0.9);
+}
+
+.notif-link:hover {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+/* Badges niveau (info/success/warning/error) */
+.notif-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+}
+
+/* couleur par niveau */
+.notif-badge--info {
+    background: rgba(59, 130, 246, 0.12);
+    color: #1d4ed8;
+}
+
+.notif-badge--success {
+    background: rgba(16, 185, 129, 0.12);
+    color: #047857;
+}
+
+.notif-badge--warning {
+    background: rgba(234, 179, 8, 0.15);
+    color: #b45309;
+}
+
+.notif-badge--error,
+.notif-badge--danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+}
+
+/* Etat vide */
+.notif-empty {
+    margin-top: 2rem;
+    text-align: center;
+    padding: 2rem;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+    color: #6b7280;
+}

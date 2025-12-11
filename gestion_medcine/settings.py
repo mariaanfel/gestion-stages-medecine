@@ -38,14 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Comm_notif',
-    'Eval_rapp',
-    'Plan_clan',
     'Stage_condi',
     'accounts',
-    
-     
-
-
+   
 ]
 
 MIDDLEWARE = [

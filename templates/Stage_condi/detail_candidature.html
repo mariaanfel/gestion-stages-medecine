@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Détail de la candidature{% endblock %}
+{% block sidebar_menu %}
+   {% if user.role == "student" %}
+    <a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                
+    {% elif user.role == "doctor" %}
+    <a href="{% url 'accounts:doctor_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>              
+    {% elif user.role == "chef" %}
+    <a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>            
+    {% elif user.role == "responsable" %}
+    <a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                           
+    {% endif %}
+
+{% endblock %}
+
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/cards.css' %}">
+
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Détail de la candidature</h1>
+    <p class="dashboard-subtitle">
+        Stage : {{ candidature.offre.titre }} —
+        Étudiant : {{ candidature.etudiant.username }}
+    </p>
+</div>
+
+<div class="cards-container">
+    <div class="card">
+        <h3>Informations générales</h3>
+        <p><strong>Stage :</strong> {{ candidature.offre.titre }}</p>
+        <p><strong>Spécialité :</strong> {{ candidature.offre.specialite }}</p>
+        <p><strong>Date de dépôt :</strong> {{ candidature.date_postulation|date:"d/m/Y H:i" }}</p>
+        <p>
+            <strong>Statut :</strong>
+            {% if candidature.statut == 'en_attente' %} En attente
+            {% elif candidature.statut == 'acceptee' %} Acceptée
+            {% elif candidature.statut == 'refusee' %} Refusée
+            {% elif candidature.statut == 'archivee' %} Archivée
+            {% endif %}
+        </p>
+        {% if user.role == "chef" and candidature.statut == "en_attente" %}
+        <div class="candidature-actions">
+            <form method="post" action='{% url "Stage_condi:accepter_candidature" candidature.id %}'>
+               {% csrf_token %}
+                <button type="submit" class="btn-accept">Accepter</button>
+            </form>
+            <form method="post" action='{% url "Stage_condi:refuser_candidature" candidature.id %}'>
+                {% csrf_token %}
+                <button type="submit" class="btn-refuse">Refuser</button>
+            </form>
+            
+            </div>
+        {% endif %}
+        <a href="{% url 'Stage_condi:liste_candidatures_chef' %}" class="offre-delete" style="background:#7f8c8d;">Retour</a>
+    </div>
+
+    <div class="card">
+        <h3>Lettre de motivation</h3>
+        {% if candidature.lettre_motivation %}
+            <p style="white-space: pre-line;">
+                {{ candidature.lettre_motivation }}
+            </p>
+        {% else %}
+            <p>Aucune lettre de motivation fournie.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h3>CV / Document</h3>
+        {% if candidature.cv %}
+            <a href="{{ candidature.cv.url }}" target="_blank" class="btn-primary">
+                Télécharger le CV
+            </a>
+        {% else %}
+            <p>Aucun document joint.</p>
+        {% endif %}
+        
+    </div>
+
+    {% if candidature.commentaire_medecin %}
+        <div class="card">
+            <h3>Commentaire du médecin</h3>
+            <p style="white-space: pre-line;">
+                {{ candidature.commentaire_medecin }}
+            </p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

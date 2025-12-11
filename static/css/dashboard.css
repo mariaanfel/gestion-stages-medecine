@@ -218,3 +218,92 @@
         font-size: 24px;
     }
 }
+/* ===========================
+   Admin - Gestion utilisateurs
+   =========================== */
+
+.admin-users-container {
+    margin-top: 1.5rem;
+}
+
+.admin-users-toolbar {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+}
+
+.admin-users-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+/* Table */
+.admin-users-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.admin-users-table thead {
+    background: #f3f4f6;
+}
+
+.admin-users-table th,
+.admin-users-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.admin-users-table th {
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.admin-users-table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.admin-users-table tbody tr:hover {
+    background-color: #eef2ff;
+}
+
+/* Actions */
+.admin-users-actions {
+    white-space: nowrap;
+}
+
+.admin-users-actions .divider {
+    margin: 0 0.25rem;
+    color: #9ca3af;
+}
+
+.btn-link-danger {
+    color: #b91c1c;
+}
+
+.btn-link-danger:hover {
+    text-decoration: underline;
+}
+
+/* Optionnel : harmoniser le bouton principal si besoin */
+.btn-primary {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.btn-primary:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+}

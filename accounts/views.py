@@ -473,5 +473,109 @@ class AdminDashboard(View):
     
 
     
+@method_decorator([login_required, user_passes_test(is_admin)], name="dispatch")
+class AdminUserListView(View):
+    def get(self, request):
+        users = User.objects.all().order_by("-date_joined")
+        return render(request, "accounts/admin_users_list.html", {"users": users})
 
 
+@method_decorator([login_required, user_passes_test(is_admin)], name="dispatch")
+class AdminUserUpdateView(View):
+    def get(self, request, pk):
+        user_obj = get_object_or_404(User, pk=pk)
+        return render(request, "accounts/admin_user_edit.html", {"user_obj": user_obj})
+
+    def post(self, request, pk):
+        user_obj = get_object_or_404(User, pk=pk)
+
+        new_role = request.POST.get("role")
+        is_active = request.POST.get("is_active") == "on"
+
+        if new_role in ["student", "doctor", "chef", "responsable", "admin"]:
+            user_obj.role = new_role
+
+        user_obj.is_active = is_active
+        user_obj.save()
+
+        notify_code(
+            request.user,
+            code="ADMIN_USER_UPDATED",
+            context={
+                "username": user_obj.username,
+                "role": user_obj.role,
+                "is_active": "actif" if user_obj.is_active else "inactif",
+            },
+            category="admin",
+            level="info",
+        )
+
+        messages.success(request, "Utilisateur mis à jour avec succès.")
+        return redirect("accounts:admin_users")
+
+
+    
+
+@method_decorator([login_required, user_passes_test(is_admin)], name="dispatch")
+class AdminUserCreateView(View):
+    def get(self, request):
+        form = RegistrationForm()
+        return render(request, "accounts/admin_user_create.html", {"form": form})
+
+    def post(self, request):
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user_obj = form.save()  # on NE fait PAS login() ici
+
+            # 🔔 Notification admin : utilisateur créé
+            notify_code(
+                request.user,
+                code="ADMIN_USER_CREATED",
+                context={
+                    "username": user_obj.username,
+                    "role": user_obj.role,
+                },
+                category="admin",
+                level="success",
+            )
+
+            messages.success(request, "Utilisateur créé avec succès.")
+            return redirect("accounts:admin_users")
+
+        return render(request, "accounts/admin_user_create.html", {"form": form})
+
+@method_decorator([login_required, user_passes_test(is_admin)], name="dispatch")
+class AdminUserDeleteView(View):
+    def get(self, request, pk):
+        user_obj = get_object_or_404(User, pk=pk)
+        # ⚠️ On empêche un admin de se supprimer lui-même
+        if user_obj == request.user:
+            messages.error(request, "Vous ne pouvez pas supprimer votre propre compte.")
+            return redirect("accounts:admin_users")
+
+        return render(request, "accounts/admin_user_confirm_delete.html", {"user_obj": user_obj})
+
+    def post(self, request, pk):
+        user_obj = get_object_or_404(User, pk=pk)
+        if user_obj == request.user:
+            messages.error(request, "Vous ne pouvez pas supprimer votre propre compte.")
+            return redirect("accounts:admin_users")
+
+        username = user_obj.username
+        role = user_obj.role
+        user_obj.delete()
+
+        # 🔔 Notification admin : utilisateur supprimé
+        notify_code(
+            request.user,
+            code="ADMIN_USER_DELETED",
+            context={
+                "username": username,
+                "role": role,
+            },
+            category="admin",
+            level="warning",
+        )
+
+        messages.success(request, f"L'utilisateur {username} a été supprimé.")
+        return redirect("accounts:admin_users")

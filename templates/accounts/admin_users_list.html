@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{% block sidebar_menu %}
+    {% if user.role == "student" %}
+    <a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                
+    {% elif user.role == "doctor" %}
+    <a href="{% url 'accounts:doctor_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>              
+    {% elif user.role == "chef" %}
+    <a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>            
+    {% elif user.role == "responsable" %}
+    <a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>   
+    {% elif user.role == "admin" %}
+    <a href="{% url 'accounts:admin_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                         
+    {% endif %}
+
+
+
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Gestion des utilisateurs</h1>
+    <p class="dashboard-subtitle">
+        Liste de tous les comptes de la plateforme.
+    </p>
+</div>
+
+<div class="admin-users-container">
+
+    <div class="admin-users-toolbar">
+        <a href="{% url 'accounts:admin_user_create' %}" class="btn-primary">
+            + Créer un nouvel utilisateur
+        </a>
+    </div>
+
+    <div class="admin-users-card">
+        <table class="admin-users-table">
+            <thead>
+                <tr>
+                    <th>Nom d’utilisateur</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Actif ?</th>
+                    <th>Date d’inscription</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                    <tr>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.role }}</td>
+                        <td>{% if u.is_active %}Oui{% else %}Non{% endif %}</td>
+                        <td>{{ u.date_joined|date:"d/m/Y H:i" }}</td>
+                        <td class="admin-users-actions">
+                            <a href="{% url 'accounts:admin_user_edit' u.pk %}" class="btn-link">Modifier</a>
+                            {% if u != request.user %}
+                                <span class="divider">|</span>
+                                <a href="{% url 'accounts:admin_user_delete' u.pk %}" class="btn-link btn-link-danger">
+                                    Supprimer
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">Aucun utilisateur.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

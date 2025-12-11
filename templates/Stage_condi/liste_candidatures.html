@@ -87,9 +87,11 @@
                         {% endif %}
                     </div>
 
+            
+
                     {% if cand.commentaire_medecin %}
                         <div class="candidature-comment">
-                            <strong>Commentaire :</strong> {{ cand.commentaire_medecin }}
+                            <strong>Commentaire médecin :</strong> {{ cand.commentaire_medecin|default:"Aucun commentaire pour le moment" }}
                         </div>
                     {% endif %}
 
@@ -113,6 +115,11 @@
                            </a>
                          </div>
                     {% endif %}
+                    <div class="candidature-actions">
+                          <a href="{% url 'Stage_condi:detail_candidature' cand.id %}" class="btn-primary">
+                          Voir le détail
+                         </a>
+                    </div>
                 </div>
             {% endfor %}
         </div>

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Modifier l’utilisateur{% endblock %}
+
+{% block sidebar_menu %}
+    {% if user.role == "student" %}
+    <a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                
+    {% elif user.role == "doctor" %}
+    <a href="{% url 'accounts:doctor_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>              
+    {% elif user.role == "chef" %}
+    <a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>            
+    {% elif user.role == "responsable" %}
+    <a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>    
+        {% elif user.role == "admin" %}
+    <a href="{% url 'accounts:admin_dashboard' %}" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-text">Dashboard</div>
+    </a>                        
+    {% endif %}
+
+
+
+{% endblock %}
+{% block content %}
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Modifier l’utilisateur</h1>
+    <p class="dashboard-subtitle">
+        {{ user_obj.username }} ({{ user_obj.email }})
+    </p>
+</div>
+
+<form method="post" class="form-card">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="role">Rôle</label>
+        <select name="role" id="role">
+            <option value="student" {% if user_obj.role == "student" %}selected{% endif %}>Étudiant</option>
+            <option value="doctor" {% if user_obj.role == "doctor" %}selected{% endif %}>Médecin</option>
+            <option value="chef" {% if user_obj.role == "chef" %}selected{% endif %}>Chef de service</option>
+            <option value="responsable" {% if user_obj.role == "responsable" %}selected{% endif %}>Responsable d’hôpital</option>
+            <option value="admin" {% if user_obj.role == "admin" %}selected{% endif %}>Administrateur</option>
+        </select>
+    </div>
+
+    <div class="form-group inline-checkbox">
+        <label for="is_active">Compte actif</label>
+        <input type="checkbox" name="is_active" id="is_active"
+               {% if user_obj.is_active %}checked{% endif %}>
+    </div>
+
+    <button type="submit" class="btn-primary">Enregistrer</button>
+    <a href="{% url 'accounts:admin_users' %}" class="btn-secondary">Annuler</a>
+</form>
+{% endblock %}

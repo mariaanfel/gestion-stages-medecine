@@ -1,0 +1,172 @@
+/* ===== Page Statistiques ===== */
+
+.stats-page {
+    padding: 2.5rem 3rem;
+    min-height: 100vh;
+    background: #f4f7fb;  /* gris très clair */
+}
+
+/* Titre principal */
+.stats-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #172b4d;
+}
+
+/* Sous-titre / légende éventuelle */
+.stats-subtitle {
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin-bottom: 2.5rem;
+}
+
+/* ===== Cartes de stats en haut ===== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stats-card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 1.6rem 1.8rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.stats-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, #3b82f6, #16a3b8);
+    opacity: 0.06;
+    pointer-events: none;
+}
+
+.stats-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 35px rgba(15, 23, 42, 0.12);
+}
+
+.stats-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+}
+
+.stats-card-label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1f2933;
+}
+
+.stats-card-chip {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.08);
+    color: #2563eb;
+}
+
+.stats-card-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.4rem;
+}
+
+.stats-card-caption {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* Exemples de couleurs selon le type de stat */
+.stats-card--success .stats-card-chip {
+    background: rgba(16, 185, 129, 0.12);
+    color: #059669;
+}
+
+.stats-card--danger .stats-card-chip {
+    background: rgba(239, 68, 68, 0.12);
+    color: #dc2626;
+}
+
+.stats-card--warning .stats-card-chip {
+    background: rgba(234, 179, 8, 0.12);
+    color: #b45309;
+}
+
+/* ===== Tableau de répartition ===== */
+
+.stats-section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #111827;
+}
+
+.stats-table-wrapper {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 1.5rem 1.8rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    margin-top: 1rem;
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.stats-table thead {
+    background: #f9fafb;
+}
+
+.stats-table th,
+.stats-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.stats-table th {
+    font-weight: 600;
+    color: #4b5563;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.stats-table tbody tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+.stats-table tbody tr:hover {
+    background: #eef2ff;
+}
+
+.stats-table td {
+    color: #111827;
+}
+
+/* petite pastille colorée pour l'offre */
+.stats-offre-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stats-offre-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #3b82f6;
+}

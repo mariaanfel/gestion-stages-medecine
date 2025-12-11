@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Modifier l'Offre{% endblock %}
 
+{% block title %}Supprimer l’utilisateur{% endblock %}
 
 {% block sidebar_menu %}
-{% if user.role == "student" %}
+    {% if user.role == "student" %}
     <a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
       <div class="nav-icon"><i class="fas fa-home"></i></div>
       <div class="nav-text">Dashboard</div>
@@ -23,28 +23,33 @@
     <a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
       <div class="nav-icon"><i class="fas fa-home"></i></div>
       <div class="nav-text">Dashboard</div>
-    </a> 
+    </a>  
     {% elif user.role == "admin" %}
     <a href="{% url 'accounts:admin_dashboard' %}" class="nav-item">
       <div class="nav-icon"><i class="fas fa-home"></i></div>
       <div class="nav-text">Dashboard</div>
-    </a>                           
+    </a>                          
     {% endif %}
+
 
 {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/forms.css' %}">
-
-<div class="form-container">
-    <h2 class="form-title">Modifier l'Offre</h2>
-
-   <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-
-        <button type="submit" class="btn-submit">Modifier</button>
-    </form>
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Supprimer l’utilisateur</h1>
+    <p class="dashboard-subtitle">
+        Voulez-vous vraiment supprimer le compte <strong>{{ user_obj.username }}</strong> (rôle : {{ user_obj.role }}) ?
+    </p>
 </div>
-{% endblock %}
 
+<form method="post" class="form-card">
+    {% csrf_token %}
+
+    <p>Cette action est définitive.</p>
+
+    <button type="submit" class="btn-primary" style="background:#b91c1c;">
+        Oui, supprimer
+    </button>
+    <a href="{% url 'accounts:admin_users' %}" class="btn-secondary">Annuler</a>
+</form>
+{% endblock %}

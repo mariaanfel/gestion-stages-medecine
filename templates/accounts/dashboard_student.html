@@ -33,7 +33,7 @@
 {% block content %}
 <div class="dashboard-header">
     <h1 class="dashboard-title">Tableau de Bord Étudiant</h1>
-    <p class="dashboard-subtitle"></p>
+    
 </div>
 
 <div class="cards-grid">
@@ -74,7 +74,7 @@
         </div>
         <div class="card-content">
             <p class="card-description">Suivez vos notes et votre progression.</p>
-            <span class="stat-badge"></span>
+            
         </div>
     </div>
 
@@ -88,12 +88,12 @@
         </div>
         <div class="card-content">
             <p class="card-description">Communiquez facilement avec votre encadrant.</p>
-            <span class="stat-badge">2 messages non lus</span>
+            
         </div>
     </div>
 
     <!-- Notifications -->
-    <div class="dashboard-card student-card">
+    <div class="dashboard-card student-card" onclick="window.location.href='{% url 'Comm_notif:liste' %}'">
         <div class="card-header">
             <h3 class="card-title">Notifications</h3>
             <div class="card-icon student-icon">
@@ -102,7 +102,7 @@
         </div>
         <div class="card-content">
             <p class="card-description">Restez à jour sur les annonces importantes.</p>
-            <span class="stat-badge">3 nouvelles alertes</span>
+           
         </div>
     </div>
 </div>

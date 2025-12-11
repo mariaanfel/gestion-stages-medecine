@@ -1,5 +1,8 @@
 {% extends "base.html" %} 
 {% load static %} 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/statistiques.css' %}">
+{% endblock %}
 {% block sidebar_menu %} 
 {%if user.role == "student" %}
 <a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
@@ -21,51 +24,98 @@
   <div class="nav-icon"><i class="fas fa-home"></i></div>
   <div class="nav-text">Dashboard</div>
 </a>
-{% endif %} {% endblock %} {% block title %}Statistiques Hôpital{% endblock %}
+{% endif %}
+{% endblock %} 
+{% block title %}Statistiques Hôpital{% endblock %}
+
 {% block content %}
-<div class="dashboard-header">
-  <h1>Statistiques Globales de l’Hôpital</h1>
+<div class="stats-page">
+
+    <h1 class="stats-title">Statistiques globales de l’hôpital</h1>
+    <p class="stats-subtitle">
+        Vue d’ensemble des offres de stage et des candidatures pour tous les services.
+    </p>
+
+    <div class="stats-grid">
+        <!-- Offres totales -->
+        <div class="stats-card">
+            <div class="stats-card-header">
+                <span class="stats-card-label">Offres Totales</span>
+                <span class="stats-card-chip">Stages</span>
+            </div>
+            <div class="stats-card-value">{{ stats.offres_total }}</div>
+            <div class="stats-card-caption">toutes spécialités confondues</div>
+        </div>
+
+        <!-- Candidatures totales -->
+        <div class="stats-card">
+            <div class="stats-card-header">
+                <span class="stats-card-label">Candidatures Totales</span>
+                <span class="stats-card-chip">Candidatures</span>
+            </div>
+            <div class="stats-card-value">{{ stats.candidatures_totales }}</div>
+            <div class="stats-card-caption">sur l’ensemble des offres</div>
+        </div>
+
+        <!-- En attente -->
+        <div class="stats-card stats-card--warning">
+            <div class="stats-card-header">
+                <span class="stats-card-label">En Attente</span>
+                <span class="stats-card-chip">À traiter</span>
+            </div>
+            <div class="stats-card-value">{{ stats.en_attente }}</div>
+            <div class="stats-card-caption">candidature(s) en cours de décision</div>
+        </div>
+
+        <!-- Acceptées -->
+        <div class="stats-card stats-card--success">
+            <div class="stats-card-header">
+                <span class="stats-card-label">Acceptées</span>
+                <span class="stats-card-chip">Validées</span>
+            </div>
+            <div class="stats-card-value">{{ stats.acceptees }}</div>
+            <div class="stats-card-caption">candidature(s) acceptée(s)</div>
+        </div>
+
+        <!-- Refusées -->
+        <div class="stats-card stats-card--danger">
+            <div class="stats-card-header">
+                <span class="stats-card-label">Refusées</span>
+                <span class="stats-card-chip">Refus</span>
+            </div>
+            <div class="stats-card-value">{{ stats.refusees }}</div>
+            <div class="stats-card-caption">candidature(s) refusée(s)</div>
+        </div>
+    </div>
+
+    <h2 class="stats-section-title">Répartition des candidatures par service</h2>
+    <div class="stats-table-wrapper">
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th>Service</th>
+                    <th>Nombre de candidatures</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in stats_par_service %}
+                    <tr>
+                        <td>
+                            <div class="stats-offre-name">
+                                <span class="stats-offre-dot"></span>
+                                <span>{{ row.offre__specialite }}</span>
+                            </div>
+                        </td>
+                        <td>{{ row.total }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2">Aucune candidature enregistrée pour le moment.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </div>
-
-<div class="cards-grid">
-  <div class="dashboard-card">
-    <h3>Offres Totales</h3>
-    <p>{{ stats.offres_total }}</p>
-  </div>
-
-  <div class="dashboard-card">
-    <h3>Candidatures Totales</h3>
-    <p>{{ stats.candidatures_totales }}</p>
-  </div>
-
-  <div class="dashboard-card">
-    <h3>Acceptées</h3>
-    <p>{{ stats.acceptees }}</p>
-  </div>
-
-  <div class="dashboard-card">
-    <h3>En Attente</h3>
-    <p>{{ stats.en_attente }}</p>
-  </div>
-</div>
-
-<h2>Comparaison des Services</h2>
-<table class="table">
-  <tr>
-    <th>Service</th>
-    <th>Candidatures Totales</th>
-  </tr>
-
-  {% for item in stats_par_service %}
-  <tr>
-    <td>{{ item.offre__specialite }}</td>
-    <td>{{ item.total }}</td>
-  </tr>
-  {% empty %}
-  <tr>
-    <td colspan="2">Aucune donnée</td>
-  </tr>
-  {% endfor %}
-</table>
-
 {% endblock %}
