@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login   # <— important
 from django.db.models import Count, Q
 from Stage_condi.models import OffreStage, Candidature  
+from Comm_notif.services import notify_code
+
 
 
 def get_dashboard_url_name(user):
@@ -69,8 +71,6 @@ class RegisterView(View):
 
         return render(request, "accounts/register.html", {"form": form})
 
-
-
 class LoginView(View):
     def get(self, request):
         # ⚠️ Si l'utilisateur est déjà connecté, on l'envoie direct sur SON dashboard
@@ -87,11 +87,39 @@ class LoginView(View):
             user = form.get_user()
             login(request, user)
 
+            # 🔔 Notifications après login, selon le rôle
+            if user.role == "student":
+                notify_code(
+                    user,
+                    code="STUDENT_LOGIN_SUCCESS",
+                    context={},
+                    category="auth",
+                    level="success",
+                )
+            elif user.role in ["chef", "doctor", "responsable"]:
+                notify_code(
+                    user,
+                    code="HOSPITAL_LOGIN_SUCCESS",
+                    context={},
+                    category="auth",
+                    level="success",
+                )
+            elif user.role == "admin":
+                notify_code(
+                    user,
+                    code="ADMIN_LOGIN_SUCCESS",
+                    context={},
+                    category="auth",
+                    level="success",
+                )
+
             # ⚠️ ON IGNORE COMPLETEMENT "next" POUR CASSER LA BOUCLE
             return redirect(get_dashboard_url_name(user))
 
         # Si le login échoue, on réaffiche la page
         return render(request, "accounts/login.html", {"form": form})
+
+
 class LogoutView(View):
     def get(self, request):
         logout(request)
@@ -467,3 +495,8 @@ class AdminDashboard(View):
             "page_title": "Dashboard Administrateur",
         }
         return render(request, "accounts/dashboard_admin.html", context)
+    
+
+    
+
+

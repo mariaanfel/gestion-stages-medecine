@@ -8,6 +8,10 @@
     --info-color: #9b59b6;
     --light-color: #ecf0f1;
     --dark-color: #2c3e50;
+    --student-color: #3996a4;
+    --doctor-color: #316f98;
+    --chef-color: #2c1da1;
+    --responsable-color: #9b59b6;
 }
 
 .main-content-with-sidebar {
@@ -58,10 +62,10 @@
 }
 
 /* Couleurs des cartes selon le rôle */
-.student-card { border-top-color: var(--success-color); }
-.doctor-card { border-top-color: var(--secondary-color); }
-.chef-card { border-top-color: var(--info-color); }
-.responsable-card { border-top-color: var(--danger-color); }
+.student-card { border-top-color: var(--student-color); }
+.doctor-card { border-top-color: var(--doctor-color); }
+.chef-card { border-top-color: var(--chef-color); }
+.responsable-card { border-top-color: var(--responsable-color); }
 .admin-card { border-top-color: var(--warning-color); }
 
 .card-header {
@@ -89,10 +93,10 @@
     color: white;
 }
 
-.student-icon { background-color: var(--success-color); }
-.doctor-icon { background-color: var(--secondary-color); }
-.chef-icon { background-color: var(--info-color); }
-.responsable-icon { background-color: var(--danger-color); }
+.student-icon { background-color: var(--student-color); }
+.doctor-icon { background-color: var(--doctor-color); }
+.chef-icon { background-color: var(--chef-color); }
+.responsable-icon { background-color: var(--responsable-color); }
 .admin-icon { background-color: var(--warning-color); }
 
 .card-content {

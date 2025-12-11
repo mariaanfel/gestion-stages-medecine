@@ -5,6 +5,8 @@ from django.http import HttpResponseForbidden
 from .models import OffreStage, Candidature, Evaluation
 from .forms import OffreStageForm, CandidatureForm, EvaluationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.urls import reverse         # pour générer les liens
+from Comm_notif.services import notify_code
 
 def is_chef(user):
     return user.is_authenticated and user.role == "chef"
@@ -65,6 +67,7 @@ def supprimer_offre(request, id):
 
     return render(request, "Stage_condi/delete_confirm.html", {"offre": offre})
 
+
 @user_passes_test(is_student)
 def postuler(request, id):
     offre = get_object_or_404(OffreStage, id=id)
@@ -82,6 +85,31 @@ def postuler(request, id):
             candidature.offre = offre
             candidature.save()
 
+            # 🔔 NOTIFICATIONS ICI
+            etudiant = candidature.etudiant
+            chef = offre.superviseur  # le chef qui a créé l'offre
+
+            # Notif pour l'étudiant
+            notify_code(
+                etudiant,
+                code="STUDENT_CANDIDATURE_SUBMITTED",
+                context={"stage": offre.titre},
+                url=reverse("Stage_condi:detail_offre", args=[offre.id]),
+                category="candidature",
+                level="info",
+            )
+
+            # Notif pour le chef / hôpital
+            if chef:
+                notify_code(
+                    chef,
+                    code="HOSPITAL_NEW_CANDIDATURE",
+                    context={"stage": offre.titre, "etudiant": etudiant.username},
+                    url=reverse("Stage_condi:liste_candidatures_chef"),
+                    category="candidature",
+                    level="info",
+                )
+
             messages.success(request, "Votre candidature a été envoyée avec succès.")
             return redirect("Stage_condi:detail_offre", id=offre.id)
     else:
@@ -91,7 +119,6 @@ def postuler(request, id):
         "offre": offre,
         "form": form
     })
-
 
 @login_required
 def liste_candidatures_etudiant(request):
@@ -109,6 +136,7 @@ def liste_candidatures_chef(request):
     return render(request, 'Stage_condi/liste_candidatures.html', {'candidatures': candidatures})
 
 
+
 @user_passes_test(is_chef)
 def accepter_candidature(request, id):
     candidature = get_object_or_404(Candidature, id=id)
@@ -124,6 +152,15 @@ def accepter_candidature(request, id):
         candidature.commentaire_medecin
     )
     candidature.save()
+
+    # 🔔 Notification pour l'étudiant
+    notify_code(
+        candidature.etudiant,
+        code="STUDENT_CANDIDATURE_ACCEPTED",
+        context={"stage": candidature.offre.titre},
+        category="candidature",
+        level="success",
+    )
 
     messages.success(request, "La candidature a été acceptée.")
     return redirect("Stage_condi:liste_candidatures_chef")
@@ -144,8 +181,18 @@ def refuser_candidature(request, id):
     )
     candidature.save()
 
+    # 🔔 Notification pour l'étudiant
+    notify_code(
+        candidature.etudiant,
+        code="STUDENT_CANDIDATURE_REFUSED",
+        context={"stage": candidature.offre.titre},
+        category="candidature",
+        level="warning",
+    )
+
     messages.info(request, "La candidature a été refusée.")
     return redirect("Stage_condi:liste_candidatures_chef")
+
 
 @user_passes_test(is_doctor)
 def liste_candidatures_medecin(request):
@@ -195,3 +242,5 @@ def historique_etudiant(request):
     return render(request, "Stage_condi/historique_etudiant.html", {
         "evaluations": evaluations
     })
+
+

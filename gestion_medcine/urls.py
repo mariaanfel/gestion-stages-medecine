@@ -30,6 +30,11 @@ urlpatterns = [
 
     path("", home_redirect, name="home"), 
 
+    path("notifications/", include("Comm_notif.urls")),
+    
+
+
+
     
 ]
 

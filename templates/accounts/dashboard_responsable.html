@@ -105,7 +105,7 @@ Responsable d’Hôpital{% endblock %} {% block sidebar_menu %}
   </div>
 
   <!-- Alertes & Notifications -->
-  <div class="dashboard-card responsable-card">
+  <div class="dashboard-card responsable-card"onclick="window.location.href='{% url 'Comm_notif:liste' %}'">
     <div class="card-header">
       <h3 class="card-title">Alertes & Notifications</h3>
       <div class="card-icon responsable-icon">

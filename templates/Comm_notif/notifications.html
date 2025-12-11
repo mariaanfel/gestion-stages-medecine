@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mes notifications{% endblock %}
+{% block sidebar_menu %} 
+{% if user.role == "student" %}
+<a href="{% url 'accounts:student_dashboard' %}" class="nav-item">
+  <div class="nav-icon"><i class="fas fa-home"></i></div>
+  <div class="nav-text">Dashboard</div>
+</a>
+{% elif user.role == "doctor" %}
+<a href="{% url 'accounts:doctor_dashboard' %}" class="nav-item">
+  <div class="nav-icon"><i class="fas fa-home"></i></div>
+  <div class="nav-text">Dashboard</div>
+</a>
+{% elif user.role == "chef" %}
+<a href="{% url 'accounts:chef_dashboard' %}" class="nav-item">
+  <div class="nav-icon"><i class="fas fa-home"></i></div>
+  <div class="nav-text">Dashboard</div>
+</a>
+{% elif user.role == "responsable" %}
+<a href="{% url 'accounts:responsable_dashboard' %}" class="nav-item">
+  <div class="nav-icon"><i class="fas fa-home"></i></div>
+  <div class="nav-text">Dashboard</div>
+</a>
+{% endif %}
+{% endblock %} 
+
+{% block content %}
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Mes notifications</h1>
+</div>
+
+<ul class="notification-list">
+    {% for notif in notifications %}
+        <li class="notification-item {% if not notif.is_read %}notification-unread{% endif %}">
+            <div class="notification-header">
+                <span class="notification-title">{{ notif.title }}</span>
+                <span class="notification-date">{{ notif.created_at|date:"d/m/Y H:i" }}</span>
+            </div>
+            <div class="notification-body">
+                <p>{{ notif.message }}</p>
+                {% if notif.url %}
+                    <a href="{{ notif.url }}" class="btn-link">Voir le détail</a>
+                {% endif %}
+            </div>
+        </li>
+    {% empty %}
+        <li>Aucune notification pour le moment.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

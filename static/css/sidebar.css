@@ -4,11 +4,11 @@
     --sidebar-text: #bdc3c7;
     --sidebar-active: #3498db;
     --sidebar-hover: rgba(255, 255, 255, 0.1);
-    --student-color: #2ecc71;
-    --doctor-color: #3498db;
-    --chef-color: #9b59b6;
-    --responsable-color: #e74c3c;
-    --admin-color: #f39c12;
+    --student-color: #3996a4;
+    --doctor-color: #316f98;
+    --chef-color: #2c1da1;
+    --responsable-color: #9b59b6;
+    --admin-color: #401249;
 }
 
 .sidebar {
