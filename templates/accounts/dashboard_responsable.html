@@ -6,10 +6,6 @@
 
 <span class="stat-badge"> {{ stats.services_geres }} services gérés </span>
 
-<a href="#" class="nav-item">
-  <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
-  <div class="nav-text">Planning Général de l’Hôpital</div>
-</a>
 
 
 <a href="{% url 'accounts:ResponsableStatistiquesView' %}" class="nav-item">
@@ -17,7 +13,7 @@
   <div class="nav-text">Statistiques</div>
 </a>
 
-<a href="#" class="nav-item">
+<a href="{% url 'accounts:ResponsableStatistiquesView' %}" class="nav-item">
   <div class="nav-icon"><i class="fas fa-bell"></i></div>
   <div class="nav-text">Alertes & Notifications</div>
 </a>
@@ -28,11 +24,6 @@
   
 </div>
 
-<!-- Alertes et notifications -->
-<div class="alert alert-danger">
-  <i class="fas fa-exclamation-circle"></i>
-  {{ stats.alertes_en_cours }} alertes nécessitent votre intervention
-</div>
 
 <div class="cards-grid">
   <!-- Gestion des Services -->
@@ -50,20 +41,6 @@
       <span class="stat-badge">
         {{ stats.services_geres }} services gérés
       </span>
-    </div>
-  </div>
-
-  <!-- Planning Général -->
-  <div class="dashboard-card responsable-card">
-    <div class="card-header">
-      <h3 class="card-title">Planning Général de l’Hôpital</h3>
-      <div class="card-icon responsable-icon">
-        <i class="fas fa-calendar-alt"></i>
-      </div>
-    </div>
-    <div class="card-content">
-      <p class="card-description">Organisez les activités de tout l’hôpital.</p>
-      <span class="stat-badge">5 réunions cette semaine</span>
     </div>
   </div>
 
